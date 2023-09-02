@@ -1,5 +1,3 @@
-//Apdapter thêm vào view list
-
 package com.example.musicapp;
 
 import android.content.Context;
