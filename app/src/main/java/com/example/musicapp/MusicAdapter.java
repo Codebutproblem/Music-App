@@ -15,7 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class MusicAdapter extends BaseAdapter implements Filterable {
-    private Context context;
+    Context context;
     private int layout;
     private ArrayList<Music>arrayMusic;
     private ArrayList<Music>arrayMusicOld;
