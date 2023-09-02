@@ -1,27 +1,17 @@
 package com.example.musicapp;
 
-
-
-//Du lieu am nhac
-// Tao class
-
 public class Music {
-    private String tenNhac; //Ten nhac
-    private String tacGia; //Ten tac gia
-    private int hinhNen; //file hinh anh am nhac
-    private int file; //file am thanh
+    private String tenNhac;
+    private String tacGia;
+    private int hinhNen;
+    private int file;
 
-    //Constructor
     public Music(String tenNhac, String tacGia, int hinhNen, int file) {
         this.tenNhac = tenNhac;
         this.tacGia = tacGia;
         this.hinhNen = hinhNen;
         this.file = file;
     }
-
-
-
-    //Getter
     public int getFile() {
         return file;
     }
