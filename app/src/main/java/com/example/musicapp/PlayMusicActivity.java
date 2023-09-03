@@ -172,7 +172,7 @@ public class PlayMusicActivity extends AppCompatActivity {
     }
 
     private void getData() {
-        arrayMusic = MainActivity.getArrayMusic();
+        arrayMusic = SearchActivity.getArrayMusic();
         Intent it = getIntent();
         position = Integer.parseInt(it.getStringExtra("position"));
     }

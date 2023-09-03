@@ -6,21 +6,17 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.Menu;
 import android.view.View;
-import android.view.animation.Animation;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity{
+public class SearchActivity extends AppCompatActivity{
 
     private ListView lvMusic;
     private static ArrayList<Music> arrayMusic;
@@ -38,11 +34,11 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_search);
         AnhXa();
         getMusicData();
         setSupportActionBar(toolbar);
-        adapter = new MusicAdapter(MainActivity.this, R.layout.music_line, arrayMusic);
+        adapter = new MusicAdapter(SearchActivity.this, R.layout.music_line, arrayMusic);
         lvMusic.setAdapter(adapter);
 
 
