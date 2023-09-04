@@ -18,9 +18,6 @@ public class Music {
         this.hinhNen = hinhNen;
         this.file = file;
     }
-
-
-
     //Getter
     public int getFile() {
         return file;
