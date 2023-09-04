@@ -9,10 +9,10 @@
     tools:context=".SearchActivity">
 
     <include
-        android:id="@+id/toolbar"
+        android:id="@+id/search_toolbar"
         layout="@layout/main_toolbar" />
     <ListView
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/search_toolbar"
         android:layout_marginTop="5dp"
         android:id="@+id/musicList"
         android:layout_width="wrap_content"

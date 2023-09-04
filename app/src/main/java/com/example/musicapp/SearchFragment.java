@@ -63,7 +63,7 @@ public class SearchFragment extends Fragment{
         startActivity(it);
     }
     private void AnhXa(View view) {
-        toolbar = view.findViewById(R.id.toolbar);
+        toolbar = view.findViewById(R.id.search_toolbar);
         lvMusic = view.findViewById(R.id.musicList);
     }
     private void getMusicData() {

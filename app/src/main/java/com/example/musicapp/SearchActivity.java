@@ -56,7 +56,7 @@ public class SearchActivity extends AppCompatActivity{
         startActivity(it);
     }
     private void AnhXa() {
-        toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.search_toolbar);
         lvMusic = findViewById(R.id.musicList);
     }
 
