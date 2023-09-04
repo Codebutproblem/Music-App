@@ -1,113 +1,71 @@
 package com.example.musicapp;
 
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.SearchManager;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.view.Menu;
-import android.view.View;
-import android.view.animation.Animation;
-import android.widget.AdapterView;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.view.MenuItem;
 
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import java.util.ArrayList;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
-public class MainActivity extends AppCompatActivity{
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-    private ListView lvMusic;
-    private static ArrayList<Music> arrayMusic;
-    private Intent it;
-    private MusicAdapter adapter;
-    private Toolbar toolbar;
-    private SearchView searchView;
-    public static ArrayList<Music> getArrayMusic() {
-        return arrayMusic;
-    }
-    public static void setArrayMusic(ArrayList<Music>newArrayMusic){
-        arrayMusic = newArrayMusic;
-    }
-
+public class MainActivity extends AppCompatActivity {
+    private BottomNavigationView navigationView;
+    private ViewPager viewPager;
+    private ViewPagerAdapter viewPagerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        AnhXa();
-        getMusicData();
-        setSupportActionBar(toolbar);
-        adapter = new MusicAdapter(MainActivity.this, R.layout.music_line, arrayMusic);
-        lvMusic.setAdapter(adapter);
 
+        navigationView = findViewById(R.id.bottom_nav);
+        viewPager = findViewById(R.id.view_pager);
 
-
-        lvMusic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        setupViewPager();
+        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                openPlayPage(i);
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if(item.getItemId() == R.id.action_home){
+                    viewPager.setCurrentItem(0);
+                }
+                if(item.getItemId() == R.id.action_search){
+                    viewPager.setCurrentItem(1);
+                }
+                if(item.getItemId() == R.id.action_favourite){
+                    viewPager.setCurrentItem(2);
+                }
+                return true;
             }
         });
     }
-
-    private void openPlayPage(int i){
-        it = new Intent(this,PlayMusicActivity.class);
-        it.putExtra("position",i + "");
-        startActivity(it);
-    }
-    private void AnhXa() {
-        toolbar = (Toolbar)findViewById(R.id.toolbar);
-        lvMusic = (ListView) findViewById(R.id.musicList);
-    }
-
-    private void getMusicData() {
-        arrayMusic = new ArrayList<>();
-        arrayMusic.add(new Music("Arcade","Duncan Laurence",R.drawable.arcane,R.raw.arcane));
-        arrayMusic.add(new Music("Dù Cho Mai Về Sau","Buitruonglinh",R.drawable.duchomaivesau,R.raw.duchomaivesau));
-        arrayMusic.add(new Music("Hãy Cứ Vô Tư Và Lạc Quan Lên Em Ơi", "Hạ Vũ",R.drawable.haycuvotu,R.raw.haycuvotu));
-        arrayMusic.add(new Music("Seasons - Rival, Cadmium, Harley Bird","Rival, Cadmium, Harley Bird",R.drawable.seasons,R.raw.seasons));
-        arrayMusic.add(new Music("Coldplay - Hymn For The Weekend","Bely Basarte",R.drawable.hymnfortheweekend,R.raw.hymnfortheweekend));
-        arrayMusic.add(new Music("Waiting For Love","Avicii",R.drawable.waittingforlove,R.raw.waittingforlove));
-        arrayMusic.add(new Music("Enemy - Arcane", "Imagine Dragons", R.drawable.enemy_arcane,R.raw.enemy_arcane));
-        arrayMusic.add(new Music("All For Love","Tungevaag & Raaban",R.drawable.all_for_love,R.raw.all_for_love));
-        arrayMusic.add(new Music("Demons (Imagine Dragons Cover)","Tayler Buono",R.drawable.demons,R.raw.demons));
-        arrayMusic.add(new Music("Legends Never Die","Against The Current và Mako",R.drawable.legend_never_die,R.raw.legend_never_die)) ;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main,menu);
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView)menu.findItem(R.id.action_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setMaxWidth(Integer.MAX_VALUE);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+    private void setupViewPager() {
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        viewPager.setAdapter(viewPagerAdapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                adapter.getFilter().filter(query);
-                return false;
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
-                return false;
+            public void onPageSelected(int position) {
+                if (position == 0){
+                    navigationView.getMenu().findItem(R.id.action_home).setChecked(true);
+                }
+                if (position == 1){
+                    navigationView.getMenu().findItem(R.id.action_search).setChecked(true);
+                }
+                if(position == 2){
+                    navigationView.getMenu().findItem(R.id.action_favourite).setChecked(true);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
             }
         });
-        return true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        if(!searchView.isIconified()){
-            searchView.setIconified(true);
-            return;
-        }
-        super.onBackPressed();
     }
 }

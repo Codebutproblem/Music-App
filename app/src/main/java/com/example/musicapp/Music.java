@@ -1,11 +1,13 @@
 package com.example.musicapp;
 
-public class Music {
-    private String tenNhac;
-    private String tacGia;
-    private int hinhNen;
-    private int file;
 
+public class Music {
+    private String tenNhac; //Ten nhac
+    private String tacGia; //Ten tac gia
+    private int hinhNen; //file hinh anh am nhac
+    private int file; //file am thanh
+
+    //Constructor
     public Music(String tenNhac, String tacGia, int hinhNen, int file) {
         this.tenNhac = tenNhac;
         this.tacGia = tacGia;

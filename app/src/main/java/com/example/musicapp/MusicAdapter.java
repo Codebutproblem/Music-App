@@ -77,7 +77,8 @@ public class MusicAdapter extends BaseAdapter implements Filterable {
                     }
                     arrayMusic = arraySearch;
                 }
-                MainActivity.setArrayMusic(arrayMusic);
+                SearchFragment.setArrayMusic(arrayMusic);
+                SearchFragment.setArrayMusic(arrayMusic);
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = arrayMusic;
                 return filterResults;

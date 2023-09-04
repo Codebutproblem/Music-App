@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MusicApp"
         tools:targetApi="31">
-        <activity android:parentActivityName=".MainActivity"
+        <activity
             android:name=".PlayMusicActivity"
             android:exported="false" />
         <activity
