@@ -25,8 +25,12 @@ public class PlayMusicActivity extends AppCompatActivity {
     private ImageButton playPauseButton,preButton,nextButton;
     private MediaPlayer mediaPlayer;
     private Animation animation;
-    private ArrayList<Music> arrayMusic;
+    private static ArrayList<Music> arrayMusic;
     private int position;
+
+    public static void setArrayMusic(ArrayList<Music> arrayMusic) {
+        PlayMusicActivity.arrayMusic = arrayMusic;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,7 +176,6 @@ public class PlayMusicActivity extends AppCompatActivity {
     }
 
     private void getData() {
-        arrayMusic = SearchFragment.getArrayMusic();
         Intent it = getIntent();
         position = Integer.parseInt(it.getStringExtra("position"));
     }

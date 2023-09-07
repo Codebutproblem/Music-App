@@ -1,7 +1,7 @@
 package com.example.musicapp;
 
 
-public class Music {
+public class Music implements Comparable<Music>{
     private String tenNhac; //Ten nhac
     private String tacGia; //Ten tac gia
     private int hinhNen; //file hinh anh am nhac
@@ -28,5 +28,10 @@ public class Music {
 
     public int getHinhNen() {
         return hinhNen;
+    }
+
+    @Override
+    public int compareTo(Music music) {
+        return NlpUtils.removeAccent(this.getTenNhac()).compareTo(NlpUtils.removeAccent(music.getTenNhac()));
     }
 }

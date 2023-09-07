@@ -40,7 +40,7 @@ public class SearchFragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search,container,false);
         AnhXa(view);
-        getMusicData();
+        arrayMusic = MusicData.getArrayMusic();
         AppCompatActivity activity = (AppCompatActivity)getActivity();
         activity.setSupportActionBar(toolbar);
         activity.getSupportActionBar().setTitle("Search");
@@ -57,6 +57,7 @@ public class SearchFragment extends Fragment{
     }
 
     private void openPlayPage(int i){
+        PlayMusicActivity.setArrayMusic(arrayMusic);
         it = new Intent(getActivity(),PlayMusicActivity.class);
         it.putExtra("position",i + "");
         startActivity(it);
@@ -65,20 +66,6 @@ public class SearchFragment extends Fragment{
         toolbar = view.findViewById(R.id.search_toolbar);
         lvMusic = view.findViewById(R.id.musicList);
     }
-    private void getMusicData() {
-        arrayMusic = new ArrayList<>();
-        arrayMusic.add(new Music("Arcade","Duncan Laurence",R.drawable.arcane,R.raw.arcane));
-        arrayMusic.add(new Music("Dù Cho Mai Về Sau","Buitruonglinh",R.drawable.duchomaivesau,R.raw.duchomaivesau));
-        arrayMusic.add(new Music("Hãy Cứ Vô Tư Và Lạc Quan Lên Em Ơi", "Hạ Vũ",R.drawable.haycuvotu,R.raw.haycuvotu));
-        arrayMusic.add(new Music("Seasons - Rival, Cadmium, Harley Bird","Rival, Cadmium, Harley Bird",R.drawable.seasons,R.raw.seasons));
-        arrayMusic.add(new Music("Coldplay - Hymn For The Weekend","Bely Basarte",R.drawable.hymnfortheweekend,R.raw.hymnfortheweekend));
-        arrayMusic.add(new Music("Waiting For Love","Avicii",R.drawable.waittingforlove,R.raw.waittingforlove));
-        arrayMusic.add(new Music("Enemy - Arcane", "Imagine Dragons", R.drawable.enemy_arcane,R.raw.enemy_arcane));
-        arrayMusic.add(new Music("All For Love","Tungevaag & Raaban",R.drawable.all_for_love,R.raw.all_for_love));
-        arrayMusic.add(new Music("Demons (Imagine Dragons Cover)","Tayler Buono",R.drawable.demons,R.raw.demons));
-        arrayMusic.add(new Music("Legends Never Die","Against The Current và Mako",R.drawable.legend_never_die,R.raw.legend_never_die)) ;
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);

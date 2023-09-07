@@ -71,7 +71,7 @@ public class MusicAdapter extends BaseAdapter implements Filterable {
                 else{
                     ArrayList<Music> arraySearch = new ArrayList<>();
                     for(Music music : arrayMusic){
-                        if(music.getTenNhac().toLowerCase().contains(strSearch.toLowerCase())){
+                        if(NlpUtils.removeAccent(music.getTenNhac()).toLowerCase().contains(NlpUtils.removeAccent(strSearch).toLowerCase())){
                             arraySearch.add(music);
                         }
                     }

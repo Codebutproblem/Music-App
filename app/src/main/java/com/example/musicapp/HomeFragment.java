@@ -27,7 +27,7 @@ public class HomeFragment extends Fragment {
         adapter = new MusicianAdapter();
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
         rcvMusician.setLayoutManager(staggeredGridLayoutManager);
-        adapter.setData(getListMusician());
+        adapter.setData(this.getActivity(),getListMusician());
         rcvMusician.setAdapter(adapter);
         return view;
     }
@@ -35,8 +35,8 @@ public class HomeFragment extends Fragment {
     private ArrayList<Musician> getListMusician() {
         ArrayList<Musician> musicianList = new ArrayList<>();
         musicianList.add(new Musician(R.drawable.imagedragons,"Imagine Dragons"));
-        musicianList.add(new Musician(R.drawable.sontung,"Sơn Tùng M-TP"));
         musicianList.add(new Musician(R.drawable.binz,"Binz"));
+        musicianList.add(new Musician(R.drawable.sontung,"Sơn Tùng M-TP"));
         musicianList.add(new Musician(R.drawable.denvau,"Đen Vâu"));
         return musicianList;
     }
