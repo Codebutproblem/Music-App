@@ -6,36 +6,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <RelativeLayout
+        android:padding="10dp"
         android:id="@+id/top_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <androidx.cardview.widget.CardView
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="5dp"
-            android:id="@+id/avatar_card"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+        <ImageView
             android:layout_centerVertical="true"
-            app:cardCornerRadius="250dp">
-            <ImageButton
-                android:id="@+id/avatar_image"
-                android:scaleType="center"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/avatar"/>
-        </androidx.cardview.widget.CardView>
-        <Button
-            android:layout_marginLeft="-10dp"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/avatar_card"
-            android:id="@+id/name_button"
+            android:id="@+id/head_home_ic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:text="Đăng nhập"
-            android:textColor="@color/white"
-            />
+            android:src="@drawable/ic_home_2"/>
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/head_home_ic"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="HOME"
+            android:textSize="25dp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"/>
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView

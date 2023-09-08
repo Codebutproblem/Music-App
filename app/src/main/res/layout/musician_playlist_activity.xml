@@ -11,13 +11,16 @@
         android:padding="10dp"
         android:id="@+id/header_playlist"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageButton
+        android:layout_height="wrap_content"
+        android:background="#353434"
+        android:alpha="0.8">
+        <Button
             android:id="@+id/button_play_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/play"
-            android:background="@null"/>
+            android:text="▶ Play"
+            android:textSize="20dp"
+            android:textColor="#FFFFFF" />
         <TextView
             android:id="@+id/text_name"
             android:layout_alignParentRight="true"

@@ -20,7 +20,7 @@ public class MusicData {
         arrayMusic.add(new Music("Arcade","Duncan Laurence",R.drawable.arcane,R.raw.arcane));
         arrayMusic.add(new Music("Dù Cho Mai Về Sau","Buitruonglinh",R.drawable.duchomaivesau,R.raw.duchomaivesau));
         arrayMusic.add(new Music("Hãy Cứ Vô Tư Và Lạc Quan Lên Em Ơi", "Hạ Vũ",R.drawable.haycuvotu,R.raw.haycuvotu));
-        arrayMusic.add(new Music("Seasons - Rival, Cadmium, Harley Bird","Rival, Cadmium, Harley Bird",R.drawable.seasons,R.raw.seasons));
+        arrayMusic.add(new Music("Seasons","Rival, Cadmium, Harley Bird",R.drawable.seasons,R.raw.seasons));
         arrayMusic.add(new Music("Coldplay - Hymn For The Weekend","Bely Basarte",R.drawable.hymnfortheweekend,R.raw.hymnfortheweekend));
         arrayMusic.add(new Music("Waiting For Love","Avicii",R.drawable.waittingforlove,R.raw.waittingforlove));
         arrayMusic.add(new Music("All For Love","Tungevaag & Raaban",R.drawable.all_for_love,R.raw.all_for_love));
