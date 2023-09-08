@@ -22,11 +22,12 @@ public class PlayMusicActivity extends AppCompatActivity {
     private TextView musicName, runTime, totalTime;
     private ImageView musicImage;
     private SeekBar seekBar;
-    private ImageButton playPauseButton,preButton,nextButton;
+    private ImageButton playPauseButton,preButton,nextButton,replayButton;
     private MediaPlayer mediaPlayer;
     private Animation animation;
     private static ArrayList<Music> arrayMusic;
     private int position;
+    private boolean replay = false;
 
     public static void setArrayMusic(ArrayList<Music> arrayMusic) {
         PlayMusicActivity.arrayMusic = arrayMusic;
@@ -116,8 +117,22 @@ public class PlayMusicActivity extends AppCompatActivity {
                 mediaPlayer.seekTo(seekBar.getProgress());
                 if(!mediaPlayer.isPlaying()){
                     playPauseButton.setImageResource(R.drawable.pause);
+                    musicImage.startAnimation(animation);
                     updateRunTime();
                     mediaPlayer.start();
+                }
+            }
+        });
+        replayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (replay){
+                    replayButton.setImageResource(R.drawable.ic_replay_1);
+                    replay = false;
+                }
+                else{
+                    replayButton.setImageResource(R.drawable.ic_replay_2);
+                    replay = true;
                 }
             }
         });
@@ -138,13 +153,15 @@ public class PlayMusicActivity extends AppCompatActivity {
                 mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mp) {
-                        position++;
-                        if (position >= arrayMusic.size()){
-                            position = 0;
-                        }
+                        if (!replay){
+                            position++;
+                            if (position >= arrayMusic.size()){
+                                position = 0;
+                            }
 
-                        if(mediaPlayer.isPlaying()){
-                            mediaPlayer.stop();
+                            if(mediaPlayer.isPlaying()){
+                                mediaPlayer.stop();
+                            }
                         }
                         setMusicPlayImage();
                         setMusicName();
@@ -180,14 +197,15 @@ public class PlayMusicActivity extends AppCompatActivity {
         position = Integer.parseInt(it.getStringExtra("position"));
     }
     private void AnhXa() {
-        musicName = (TextView) findViewById(R.id.headMusicName);
-        runTime= (TextView) findViewById(R.id.runTime);
-        totalTime = (TextView) findViewById(R.id.totalTime);
-        musicImage = (ImageView) findViewById(R.id.musicPlayImage);
-        seekBar = (SeekBar) findViewById(R.id.seekBar);
-        playPauseButton = (ImageButton) findViewById(R.id.playPauseButton);
-        preButton = (ImageButton) findViewById(R.id.preButton);
-        nextButton = (ImageButton) findViewById(R.id.nextButton);
+        musicName = findViewById(R.id.headMusicName);
+        runTime = findViewById(R.id.runTime);
+        totalTime = findViewById(R.id.totalTime);
+        musicImage = findViewById(R.id.musicPlayImage);
+        seekBar = findViewById(R.id.seekBar);
+        playPauseButton = findViewById(R.id.playPauseButton);
+        preButton = findViewById(R.id.preButton);
+        nextButton = findViewById(R.id.nextButton);
+        replayButton = findViewById(R.id.replay_button);
     }
     @Override
     public void onBackPressed() {
