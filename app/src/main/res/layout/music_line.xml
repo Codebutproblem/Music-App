@@ -35,5 +35,5 @@
         android:layout_height="wrap_content"
         android:textColor="#FFFFFF"
         android:text="Musican Name"
-        android:textStyle="italic"/>
+        android:alpha="0.7"/>
 </RelativeLayout>
