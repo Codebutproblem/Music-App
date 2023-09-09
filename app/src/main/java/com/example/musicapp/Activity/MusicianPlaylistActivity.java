@@ -22,7 +22,6 @@ import java.util.ArrayList;
 public class MusicianPlaylistActivity extends AppCompatActivity{
 
     RelativeLayout layoutPlayList;
-    Button play;
     TextView name;
     private ListView lvMusic;
     private static ArrayList<Music> arrayMusic;
@@ -50,12 +49,6 @@ public class MusicianPlaylistActivity extends AppCompatActivity{
         layoutPlayList.setBackgroundResource(musician.getImageId());
         adapter = new MusicAdapter(MusicianPlaylistActivity.this, R.layout.music_line, arrayMusic);
         lvMusic.setAdapter(adapter);
-        play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openPlayPage(0);
-            }
-        });
         lvMusic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -72,7 +65,6 @@ public class MusicianPlaylistActivity extends AppCompatActivity{
     }
     private void AnhXa() {
         layoutPlayList = findViewById(R.id.layout_play_list);
-        play = findViewById(R.id.button_play_list);
         name = findViewById(R.id.text_name);
         lvMusic = findViewById(R.id.play_list);
     }
