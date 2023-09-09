@@ -1,16 +1,19 @@
 package com.example.musicapp.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -20,10 +23,12 @@ import com.example.musicapp.R;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-public class PlayMusicActivity extends AppCompatActivity {
+import de.hdodenhof.circleimageview.CircleImageView;
 
+public class PlayMusicActivity extends AppCompatActivity {
+    RelativeLayout playMusicLayout;
     private TextView musicName, runTime, totalTime;
-    private ImageView musicImage;
+    private CircleImageView musicImage;
     private SeekBar seekBar;
     private ImageButton playPauseButton,preButton,nextButton,replayButton;
     private MediaPlayer mediaPlayer;
@@ -31,6 +36,9 @@ public class PlayMusicActivity extends AppCompatActivity {
     private static ArrayList<Music> arrayMusic;
     private int position;
     private boolean replay = false;
+    private GestureDetector gestureDetector;
+    private int SWIPE_THRESHOLD = 100;
+    private int SWIPE_VELOCITY_THRESHOLD = 100;
 
     public static void setArrayMusic(ArrayList<Music> arrayMusic) {
         PlayMusicActivity.arrayMusic = arrayMusic;
@@ -54,12 +62,12 @@ public class PlayMusicActivity extends AppCompatActivity {
                     mediaPlayer.pause();
                     animation.cancel();
                     musicImage.setAnimation(null);
-                    playPauseButton.setImageResource(R.drawable.play);
+                    playPauseButton.setImageResource(R.drawable.ic_play);
                 }
                 else{
                     mediaPlayer.start();
                     musicImage.startAnimation(animation);
-                    playPauseButton.setImageResource(R.drawable.pause);
+                    playPauseButton.setImageResource(R.drawable.ic_pause);
                 }
                 updateRunTime();
             }
@@ -81,7 +89,7 @@ public class PlayMusicActivity extends AppCompatActivity {
                 setTimeTotal();
                 updateRunTime();
                 musicImage.startAnimation(animation);
-                playPauseButton.setImageResource(R.drawable.pause);
+                playPauseButton.setImageResource(R.drawable.ic_pause);
                 mediaPlayer.start();
             }
         });
@@ -102,7 +110,7 @@ public class PlayMusicActivity extends AppCompatActivity {
                 setTimeTotal();
                 updateRunTime();
                 musicImage.startAnimation(animation);
-                playPauseButton.setImageResource(R.drawable.pause);
+                playPauseButton.setImageResource(R.drawable.ic_pause);
                 mediaPlayer.start();
             }
         });
@@ -119,7 +127,7 @@ public class PlayMusicActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mediaPlayer.seekTo(seekBar.getProgress());
                 if(!mediaPlayer.isPlaying()){
-                    playPauseButton.setImageResource(R.drawable.pause);
+                    playPauseButton.setImageResource(R.drawable.ic_pause);
                     musicImage.startAnimation(animation);
                     updateRunTime();
                     mediaPlayer.start();
@@ -137,6 +145,14 @@ public class PlayMusicActivity extends AppCompatActivity {
                     replayButton.setImageResource(R.drawable.ic_replay_2);
                     replay = true;
                 }
+            }
+        });
+        gestureDetector = new GestureDetector(this, new MyGesture());
+        playMusicLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                gestureDetector.onTouchEvent(motionEvent);
+                return true;
             }
         });
     }
@@ -171,7 +187,7 @@ public class PlayMusicActivity extends AppCompatActivity {
                         khoiTaoMediaPlayer();
                         setTimeTotal();
                         updateRunTime();
-                        playPauseButton.setImageResource(R.drawable.pause);
+                        playPauseButton.setImageResource(R.drawable.ic_pause);
                         mediaPlayer.start();
                     }
                 });
@@ -200,6 +216,7 @@ public class PlayMusicActivity extends AppCompatActivity {
         position = Integer.parseInt(it.getStringExtra("position"));
     }
     private void AnhXa() {
+        playMusicLayout = findViewById(R.id.layout_play_music);
         musicName = findViewById(R.id.headMusicName);
         runTime = findViewById(R.id.runTime);
         totalTime = findViewById(R.id.totalTime);
@@ -217,5 +234,48 @@ public class PlayMusicActivity extends AppCompatActivity {
             mediaPlayer.stop();
         }
         super.onBackPressed();
+    }
+    class MyGesture extends GestureDetector.SimpleOnGestureListener{
+        @Override
+        public boolean onFling(@NonNull MotionEvent e1, @NonNull MotionEvent e2, float velocityX, float velocityY) {
+            //Kéo sang phải
+            if(e2.getX() - e1.getX() > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD){
+                position++;
+                if (position >= arrayMusic.size()){
+                    position = 0;
+                }
+
+                if(mediaPlayer.isPlaying()){
+                    mediaPlayer.stop();
+                }
+                khoiTaoMediaPlayer();
+                setMusicPlayImage();
+                setMusicName();
+                setTimeTotal();
+                updateRunTime();
+                musicImage.startAnimation(animation);
+                playPauseButton.setImageResource(R.drawable.ic_pause);
+                mediaPlayer.start();
+            }
+            if(e1.getX() - e2.getX() > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD){
+                position--;
+                if(position < 0){
+                    position = arrayMusic.size()-1;
+                }
+
+                if ((mediaPlayer.isPlaying())){
+                    mediaPlayer.stop();
+                }
+                khoiTaoMediaPlayer();
+                setMusicPlayImage();
+                setMusicName();
+                setTimeTotal();
+                updateRunTime();
+                musicImage.startAnimation(animation);
+                playPauseButton.setImageResource(R.drawable.ic_pause);
+                mediaPlayer.start();
+            }
+            return super.onFling(e1, e2, velocityX, velocityY);
+        }
     }
 }
