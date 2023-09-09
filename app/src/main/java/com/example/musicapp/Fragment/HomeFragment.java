@@ -1,4 +1,4 @@
-package com.example.musicapp;
+package com.example.musicapp.Fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,11 +7,13 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+import com.example.musicapp.Class.Musician;
+import com.example.musicapp.Adapter.MusicianAdapter;
+import com.example.musicapp.R;
 
 import java.util.ArrayList;
 

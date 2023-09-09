@@ -1,4 +1,4 @@
-package com.example.musicapp;
+package com.example.musicapp.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,11 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.musicapp.Fragment.SearchFragment;
+import com.example.musicapp.Class.Music;
+import com.example.musicapp.Class.NlpUtils;
+import com.example.musicapp.R;
 
 import java.util.ArrayList;
 

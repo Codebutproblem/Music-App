@@ -1,4 +1,4 @@
-package com.example.musicapp;
+package com.example.musicapp.Fragment;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -18,6 +18,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+
+import com.example.musicapp.Class.Music;
+import com.example.musicapp.Adapter.MusicAdapter;
+import com.example.musicapp.Class.MusicData;
+import com.example.musicapp.Activity.PlayMusicActivity;
+import com.example.musicapp.R;
 
 import java.util.ArrayList;
 

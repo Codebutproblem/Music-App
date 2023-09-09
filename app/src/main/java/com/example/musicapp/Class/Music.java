@@ -1,4 +1,4 @@
-package com.example.musicapp;
+package com.example.musicapp.Class;
 
 
 public class Music implements Comparable<Music>{

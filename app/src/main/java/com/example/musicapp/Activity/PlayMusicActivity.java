@@ -1,4 +1,4 @@
-package com.example.musicapp;
+package com.example.musicapp.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +13,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.example.musicapp.Class.Music;
+import com.example.musicapp.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

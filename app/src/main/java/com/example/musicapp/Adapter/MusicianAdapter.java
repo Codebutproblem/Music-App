@@ -1,4 +1,4 @@
-package com.example.musicapp;
+package com.example.musicapp.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.musicapp.Class.Musician;
+import com.example.musicapp.Activity.MusicianPlaylistActivity;
+import com.example.musicapp.R;
 
 import java.util.ArrayList;
 
@@ -48,7 +52,7 @@ public class MusicianAdapter extends RecyclerView.Adapter<MusicianAdapter.Musici
         });
     }
     private void onClickGoToDetail(Musician musician){
-        Intent it = new Intent(context,MusicianPlaylistActivity.class);
+        Intent it = new Intent(context, MusicianPlaylistActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("object_musician",musician);
         it.putExtras(bundle);

@@ -1,4 +1,4 @@
-package com.example.musicapp;
+package com.example.musicapp.Class;
 
 import java.text.Normalizer;
 import java.util.regex.Pattern;

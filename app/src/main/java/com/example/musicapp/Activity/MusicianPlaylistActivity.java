@@ -1,22 +1,21 @@
-package com.example.musicapp;
+package com.example.musicapp.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
+import com.example.musicapp.Adapter.MusicAdapter;
+import com.example.musicapp.Class.Music;
+import com.example.musicapp.Class.MusicData;
+import com.example.musicapp.Class.Musician;
+import com.example.musicapp.R;
 
 import java.util.ArrayList;
 

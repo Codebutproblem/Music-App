@@ -1,7 +1,8 @@
-package com.example.musicapp;
+package com.example.musicapp.Class;
+
+import com.example.musicapp.R;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 public class MusicData {
