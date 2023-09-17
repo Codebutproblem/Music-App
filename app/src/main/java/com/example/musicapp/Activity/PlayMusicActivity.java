@@ -37,7 +37,7 @@ public class PlayMusicActivity extends AppCompatActivity {
     private int position;
     private boolean replay = false;
     private GestureDetector gestureDetector;
-    private int SWIPE_THRESHOLD = 100;
+    private int SWIPE_THRESHOLD = 300;
     private int SWIPE_VELOCITY_THRESHOLD = 100;
 
     public static void setArrayMusic(ArrayList<Music> arrayMusic) {
@@ -75,43 +75,13 @@ public class PlayMusicActivity extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                position++;
-                if (position >= arrayMusic.size()){
-                    position = 0;
-                }
-
-                if(mediaPlayer.isPlaying()){
-                    mediaPlayer.stop();
-                }
-                khoiTaoMediaPlayer();
-                setMusicPlayImage();
-                setMusicName();
-                setTimeTotal();
-                updateRunTime();
-                musicImage.startAnimation(animation);
-                playPauseButton.setImageResource(R.drawable.ic_pause);
-                mediaPlayer.start();
+                nextSong();
             }
         });
         preButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                position--;
-                if(position < 0){
-                    position = arrayMusic.size()-1;
-                }
-
-                if ((mediaPlayer.isPlaying())){
-                    mediaPlayer.stop();
-                }
-                khoiTaoMediaPlayer();
-                setMusicPlayImage();
-                setMusicName();
-                setTimeTotal();
-                updateRunTime();
-                musicImage.startAnimation(animation);
-                playPauseButton.setImageResource(R.drawable.ic_pause);
-                mediaPlayer.start();
+                preSong();
             }
         });
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -156,7 +126,42 @@ public class PlayMusicActivity extends AppCompatActivity {
             }
         });
     }
+    private void nextSong(){
+        position++;
+        if (position >= arrayMusic.size()){
+            position = 0;
+        }
 
+        if(mediaPlayer.isPlaying()){
+            mediaPlayer.stop();
+        }
+        khoiTaoMediaPlayer();
+        setMusicPlayImage();
+        setMusicName();
+        setTimeTotal();
+        updateRunTime();
+        musicImage.startAnimation(animation);
+        playPauseButton.setImageResource(R.drawable.ic_pause);
+        mediaPlayer.start();
+    }
+    private void preSong(){
+        position--;
+        if(position < 0){
+            position = arrayMusic.size()-1;
+        }
+
+        if ((mediaPlayer.isPlaying())){
+            mediaPlayer.stop();
+        }
+        khoiTaoMediaPlayer();
+        setMusicPlayImage();
+        setMusicName();
+        setTimeTotal();
+        updateRunTime();
+        musicImage.startAnimation(animation);
+        playPauseButton.setImageResource(R.drawable.ic_pause);
+        mediaPlayer.start();
+    }
     private void setAnimation() {
         animation = AnimationUtils.loadAnimation(this,R.anim.rotate);
     }
@@ -240,40 +245,10 @@ public class PlayMusicActivity extends AppCompatActivity {
         public boolean onFling(@NonNull MotionEvent e1, @NonNull MotionEvent e2, float velocityX, float velocityY) {
             //Kéo sang phải
             if(e2.getX() - e1.getX() > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD){
-                position++;
-                if (position >= arrayMusic.size()){
-                    position = 0;
-                }
-
-                if(mediaPlayer.isPlaying()){
-                    mediaPlayer.stop();
-                }
-                khoiTaoMediaPlayer();
-                setMusicPlayImage();
-                setMusicName();
-                setTimeTotal();
-                updateRunTime();
-                musicImage.startAnimation(animation);
-                playPauseButton.setImageResource(R.drawable.ic_pause);
-                mediaPlayer.start();
+                nextSong();
             }
             if(e1.getX() - e2.getX() > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD){
-                position--;
-                if(position < 0){
-                    position = arrayMusic.size()-1;
-                }
-
-                if ((mediaPlayer.isPlaying())){
-                    mediaPlayer.stop();
-                }
-                khoiTaoMediaPlayer();
-                setMusicPlayImage();
-                setMusicName();
-                setTimeTotal();
-                updateRunTime();
-                musicImage.startAnimation(animation);
-                playPauseButton.setImageResource(R.drawable.ic_pause);
-                mediaPlayer.start();
+                preSong();
             }
             return super.onFling(e1, e2, velocityX, velocityY);
         }

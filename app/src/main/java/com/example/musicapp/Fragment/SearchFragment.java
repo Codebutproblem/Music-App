@@ -33,7 +33,11 @@ public class SearchFragment extends Fragment{
     private Intent it;
     private MusicAdapter adapter;
     private Toolbar toolbar;
-    private SearchView searchView;
+    private static SearchView searchView;
+
+    public static SearchView getSearchView() {
+        return searchView;
+    }
 
     public static ArrayList<Music> getArrayMusic() {
         return arrayMusic;

@@ -6,9 +6,11 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.musicapp.Fragment.SearchFragment;
 import com.example.musicapp.R;
 import com.example.musicapp.Adapter.ViewPagerAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -69,5 +71,15 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        SearchView searchView = SearchFragment.getSearchView();
+        if(!searchView.isIconified()){
+            searchView.setIconified(true);
+            return;
+        }
+        super.onBackPressed();
     }
 }

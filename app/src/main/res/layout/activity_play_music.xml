@@ -101,8 +101,8 @@
         android:src="@drawable/ic_replay_1"
         android:background="@null"
         android:layout_below="@id/seekBar"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="25dp"
         android:layout_toRightOf="@id/nextButton"/>
 
 </RelativeLayout>
