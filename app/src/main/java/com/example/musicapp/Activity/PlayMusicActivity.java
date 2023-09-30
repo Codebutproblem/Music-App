@@ -40,6 +40,7 @@ public class PlayMusicActivity extends AppCompatActivity {
     private int SWIPE_THRESHOLD = 300;
     private int SWIPE_VELOCITY_THRESHOLD = 100;
 
+    // Phương thức để thiết lập danh sách nhạc
     public static void setArrayMusic(ArrayList<Music> arrayMusic) {
         PlayMusicActivity.arrayMusic = arrayMusic;
     }
@@ -55,6 +56,8 @@ public class PlayMusicActivity extends AppCompatActivity {
         setMusicName();
         khoiTaoMediaPlayer();
         setTimeTotal();
+
+        // Xử lý sự kiện khi nút Play/Pause được nhấn
         playPauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,29 +75,38 @@ public class PlayMusicActivity extends AppCompatActivity {
                 updateRunTime();
             }
         });
+
+        // Xử lý sự kiện khi nút Next được nhấn
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 nextSong();
             }
         });
+
+        // Xử lý sự kiện khi nút Previous được nhấn
         preButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 preSong();
             }
         });
+
+        // Xử lý sự kiện khi người dùng thay đổi vị trí trên SeekBar
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                // Xử lý khi người dùng thay đổi vị trí SeekBar
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                // Xử lý khi người dùng bắt đầu chạm vào SeekBar
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                // Xử lý khi người dùng kết thúc chạm vào SeekBar
                 mediaPlayer.seekTo(seekBar.getProgress());
                 if(!mediaPlayer.isPlaying()){
                     playPauseButton.setImageResource(R.drawable.ic_pause);
@@ -104,6 +116,8 @@ public class PlayMusicActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // Xử lý sự kiện khi nút Replay được nhấn
         replayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -117,6 +131,8 @@ public class PlayMusicActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // Thiết lập Gesture Detector để nhận diện cử chỉ vuốt trên màn hình
         gestureDetector = new GestureDetector(this, new MyGesture());
         playMusicLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -126,6 +142,8 @@ public class PlayMusicActivity extends AppCompatActivity {
             }
         });
     }
+
+    // Phương thức để chuyển đến bài hát kế tiếp trong danh sách
     private void nextSong(){
         position++;
         if (position >= arrayMusic.size()){
@@ -144,6 +162,8 @@ public class PlayMusicActivity extends AppCompatActivity {
         playPauseButton.setImageResource(R.drawable.ic_pause);
         mediaPlayer.start();
     }
+
+    // Phương thức để chuyển đến bài hát trước đó trong danh sách
     private void preSong(){
         position--;
         if(position < 0){
@@ -162,10 +182,13 @@ public class PlayMusicActivity extends AppCompatActivity {
         playPauseButton.setImageResource(R.drawable.ic_pause);
         mediaPlayer.start();
     }
+
+    // Phương thức để thiết lập rotate animation
     private void setAnimation() {
         animation = AnimationUtils.loadAnimation(this,R.anim.rotate);
     }
 
+    // Phương thức để cập nhật thời gian hiện tại của bài hát đang phát
     private void updateRunTime(){
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -177,6 +200,7 @@ public class PlayMusicActivity extends AppCompatActivity {
                 mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mp) {
+                        // Xử lý sự kiện khi bài hát kết thúc
                         if (!replay){
                             position++;
                             if (position >= arrayMusic.size()){
@@ -201,26 +225,32 @@ public class PlayMusicActivity extends AppCompatActivity {
         },100);
     }
     private void setTimeTotal(){
+        // Phương thức để thiết lập thời gian tổng của bài hát
         SimpleDateFormat total = new SimpleDateFormat("mm:ss");
         totalTime.setText(total.format(mediaPlayer.getDuration()));
         seekBar.setMax(mediaPlayer.getDuration());
     }
     private void khoiTaoMediaPlayer(){
+        // Khởi tạo MediaPlayer để phát nhạc từ tệp âm thanh tại vị trí hiện tại trong danh sách nhạc
         mediaPlayer = MediaPlayer.create(PlayMusicActivity.this, arrayMusic.get(position).getFile());
     }
     private void setMusicName() {
+        // Đặt tên bài hát hiện tại lên giao diện
         musicName.setText(arrayMusic.get(position).getTenNhac());
     }
 
     private void setMusicPlayImage() {
+        // Đặt hình ảnh của bài hát hiện tại lên giao diện
         musicImage.setImageResource(arrayMusic.get(position).getHinhNen());
     }
 
     private void getData() {
+        // Lấy dữ liệu vị trí bài hát được chọn từ Intent
         Intent it = getIntent();
         position = Integer.parseInt(it.getStringExtra("position"));
     }
     private void AnhXa() {
+        // Ánh xạ các thành phần giao diện
         playMusicLayout = findViewById(R.id.layout_play_music);
         musicName = findViewById(R.id.headMusicName);
         runTime = findViewById(R.id.runTime);
@@ -243,12 +273,12 @@ public class PlayMusicActivity extends AppCompatActivity {
     class MyGesture extends GestureDetector.SimpleOnGestureListener{
         @Override
         public boolean onFling(@NonNull MotionEvent e1, @NonNull MotionEvent e2, float velocityX, float velocityY) {
-            //Kéo sang phải
+            // Xử lý cử chỉ vuốt trái hoặc phải trên màn hình
             if(e2.getX() - e1.getX() > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD){
-                nextSong();
+                nextSong();// Chuyển đến bài hát tiếp theo khi vuốt sang phải
             }
             if(e1.getX() - e2.getX() > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD){
-                preSong();
+                preSong();// Chuyển đến bài hát trước đó khi vuốt sang trái
             }
             return super.onFling(e1, e2, velocityX, velocityY);
         }

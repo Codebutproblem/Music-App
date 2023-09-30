@@ -6,8 +6,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class MusicData {
+
+    // Phương thức để lấy danh sách các bản nhạc
     public static ArrayList<Music> getArrayMusic(){
         ArrayList<Music> arrayMusic = new ArrayList<>();
+
+        // Thêm các bản nhạc vào danh sách
         arrayMusic.add(new Music("Imagine Dragons - Enemy", "Imagine Dragons", R.drawable.enemy_arcane,R.raw.enemy_arcane));
         arrayMusic.add(new Music("Imagine Dragons - Demons","Imagine Dragons",R.drawable.demons,R.raw.demons));
         arrayMusic.add(new Music("Imagine Dragons - Believer","Imagine Dragons",R.drawable.believer,R.raw.believer));
@@ -26,11 +30,17 @@ public class MusicData {
         arrayMusic.add(new Music("Waiting For Love","Avicii",R.drawable.waittingforlove,R.raw.waittingforlove));
         arrayMusic.add(new Music("All For Love","Tungevaag & Raaban",R.drawable.all_for_love,R.raw.all_for_love));
         arrayMusic.add(new Music("Legends Never Die","Against The Current và Mako",R.drawable.legend_never_die,R.raw.legend_never_die)) ;
+
+        // Sắp xếp danh sách bản nhạc theo thứ tự bảng chữ cái (không phân biệt hoa thường)
         Collections.sort(arrayMusic);
         return arrayMusic;
     }
+
+    // Phương thức để lọc danh sách các bản nhạc theo tên của nghệ sĩ (tác giả)
     public static ArrayList<Music> musicianList(String musicianName, ArrayList<Music>musicArrayList){
         ArrayList<Music>arrayMusic = new ArrayList<>();
+
+        // Duyệt qua danh sách các bản nhạc và thêm vào danh sách mới nếu tên nghệ sĩ trùng khớp
         for(Music music : musicArrayList){
             if(NlpUtils.removeAccent(music.getTacGia()).compareToIgnoreCase(NlpUtils.removeAccent(musicianName)) == 0){
                 arrayMusic.add(music);
