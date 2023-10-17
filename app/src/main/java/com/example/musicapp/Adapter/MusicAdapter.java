@@ -63,7 +63,7 @@ public class MusicAdapter extends BaseAdapter implements Filterable {
 
         // Đặt thông tin bài nhạc lên giao diện
         txtMusicName.setText(music.getTenNhac());
-        txtMusicianName.setText(music.getTacGia());
+        txtMusicianName.setText(music.getCaSi());
         musicImage.setImageResource(music.getHinhNen());
 
         return view;
@@ -85,7 +85,7 @@ public class MusicAdapter extends BaseAdapter implements Filterable {
                     for(Music music : arrayMusic){
                         // Kiểm tra xem tên bài hát có chứa chuỗi tìm kiếm không
                         if(NlpUtils.removeAccent(music.getTenNhac()).toLowerCase().contains(NlpUtils.removeAccent(strSearch).toLowerCase())
-                          ||NlpUtils.removeAccent(music.getTacGia()).toLowerCase().contains(NlpUtils.removeAccent(strSearch).toLowerCase())){
+                          ||NlpUtils.removeAccent(music.getCaSi()).toLowerCase().contains(NlpUtils.removeAccent(strSearch).toLowerCase())){
                             arraySearch.add(music);
                         }
                     }

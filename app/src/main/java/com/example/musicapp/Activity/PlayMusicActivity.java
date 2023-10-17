@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PlayMusicActivity extends AppCompatActivity {
-    RelativeLayout playMusicLayout;
+    private RelativeLayout playMusicLayout;
     private TextView musicName, runTime, totalTime;
     private CircleImageView musicImage;
     private SeekBar seekBar;

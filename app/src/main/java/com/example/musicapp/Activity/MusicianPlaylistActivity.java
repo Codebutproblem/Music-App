@@ -59,7 +59,7 @@ public class MusicianPlaylistActivity extends AppCompatActivity{
 
         // Hiển thị thông tin ca sỹ và hình ảnh nền
         name.setText(musicianName);
-        layoutPlayList.setBackgroundResource(musician.getImageId());
+        layoutPlayList.setBackgroundResource(musician.getImageBg());
 
         // Tạo adapter cho danh sách nhạc
         adapter = new MusicAdapter(MusicianPlaylistActivity.this, R.layout.music_line, arrayMusic);

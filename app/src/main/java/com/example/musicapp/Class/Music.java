@@ -2,36 +2,64 @@ package com.example.musicapp.Class;
 
 
 public class Music implements Comparable<Music>{
+
+    private String id;
     private String tenNhac; // Tên của bản nhạc
-    private String tacGia; // Tên của tác giả của bản nhạc
+    private String caSi; // Tên của tác giả của bản nhạc
     private int hinhNen; // Tài liệu hình ảnh đại diện cho bản nhạc
     private int file; // Tài liệu âm thanh của bản nhạc
 
     // Constructor (Hàm khởi tạo)
-    public Music(String tenNhac, String tacGia, int hinhNen, int file) {
+
+    public Music(String tenNhac, String caSi, int hinhNen, int file) {
         this.tenNhac = tenNhac;
-        this.tacGia = tacGia;
+        this.caSi = caSi;
         this.hinhNen = hinhNen;
         this.file = file;
     }
 
     //Các phương thức Getter và Setter
-    public int getFile() {
-        return file;
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTenNhac() {
         return tenNhac;
     }
 
-    public String getTacGia() {
-        return tacGia;
+    public void setTenNhac(String tenNhac) {
+        this.tenNhac = tenNhac;
+    }
+
+    public String getCaSi() {
+        return caSi;
+    }
+
+    public void setCaSi(String caSi) {
+        this.caSi = caSi;
     }
 
     public int getHinhNen() {
         return hinhNen;
     }
 
+    public void setHinhNen(int hinhNen) {
+        this.hinhNen = hinhNen;
+    }
+
+    public int getFile() {
+        return file;
+    }
+
+    public void setFile(int file) {
+        this.file = file;
+    }
 
     // Phương thức compareTo dùng để so sánh hai đối tượng Music theo tên bản nhạc
     @Override

@@ -7,7 +7,7 @@
     <item android:id="@+id/action_search"
         android:title="@string/action_search"
         android:icon="@drawable/ic_search_music" />
-    <item android:id="@+id/action_favourite"
-        android:title="@string/action_favourite"
-        android:icon="@drawable/ic_favorite" />
+    <item android:id="@+id/action_library"
+        android:title="@string/action_library"
+        android:icon="@drawable/ic_library" />
 </menu>

@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 if(item.getItemId() == R.id.action_search){
                     viewPager.setCurrentItem(1);
                 }
-                if(item.getItemId() == R.id.action_favourite){
+                if(item.getItemId() == R.id.action_library){
                     viewPager.setCurrentItem(2);
                 }
                 return true;
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                     navigationView.getMenu().findItem(R.id.action_search).setChecked(true);
                 }
                 if(position == 2){
-                    navigationView.getMenu().findItem(R.id.action_favourite).setChecked(true);
+                    navigationView.getMenu().findItem(R.id.action_library).setChecked(true);
                 }
             }
 
