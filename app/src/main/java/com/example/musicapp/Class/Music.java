@@ -7,19 +7,15 @@ public class Music implements Comparable<Music>{
     private String tenNhac; // Tên của bản nhạc
     private String caSi; // Tên của tác giả của bản nhạc
     private int hinhNen; // Tài liệu hình ảnh đại diện cho bản nhạc
-    private int file; // Tài liệu âm thanh của bản nhạc
+    private String linkMp3; // Tài liệu âm thanh của bản nhạc
 
     // Constructor (Hàm khởi tạo)
-
-    public Music(String tenNhac, String caSi, int hinhNen, int file) {
+    public Music(String tenNhac, String caSi, int hinhNen, String linkMp3) {
         this.tenNhac = tenNhac;
         this.caSi = caSi;
         this.hinhNen = hinhNen;
-        this.file = file;
+        this.linkMp3 = linkMp3;
     }
-
-    //Các phương thức Getter và Setter
-
 
     public String getId() {
         return id;
@@ -53,12 +49,12 @@ public class Music implements Comparable<Music>{
         this.hinhNen = hinhNen;
     }
 
-    public int getFile() {
-        return file;
+    public String getLinkMp3() {
+        return linkMp3;
     }
 
-    public void setFile(int file) {
-        this.file = file;
+    public void setLinkMp3(String linkMp3) {
+        this.linkMp3 = linkMp3;
     }
 
     // Phương thức compareTo dùng để so sánh hai đối tượng Music theo tên bản nhạc

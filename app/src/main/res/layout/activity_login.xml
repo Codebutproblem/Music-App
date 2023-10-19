@@ -64,13 +64,13 @@
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="30dp"
         android:backgroundTint="@color/design_default_color_secondary"
-        android:text="LOGIN" />
+        android:text="Đăng nhập" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/register_page"
         android:layout_below="@id/loginbtn"
-        android:text="Click to register"
+        android:text="Nhấn để đăng ký"
         android:textSize="15dp"
         android:textColor="@color/white"
         android:layout_centerHorizontal="true" />

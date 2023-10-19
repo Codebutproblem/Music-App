@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
                 String user = String.valueOf(eUsername.getText());
                 String pass = String.valueOf(ePassword.getText());
                 // Kiểm tra đăng nhập có thành công không
-                if(checkLogin(user,pass)){
+                if(checkLogin(user,pass) && !user.equals("") && !user.equals("Dang nhap") && !pass.equals("")){
                     openMainPage(user);// Mở trang chính cho người dùng
                 }
                 else{

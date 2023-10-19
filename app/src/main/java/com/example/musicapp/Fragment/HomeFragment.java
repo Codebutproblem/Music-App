@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.example.musicapp.Activity.LoginActivity;
 import com.example.musicapp.Class.Musician;
 import com.example.musicapp.Adapter.MusicianAdapter;
 import com.example.musicapp.Class.MusicianData;
+import com.example.musicapp.Class.NlpUtils;
 import com.example.musicapp.R;
 
 import java.util.ArrayList;
@@ -35,11 +37,27 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home,container,false);
         AnhXa(view);// Ánh xạ các thành phần trong layout
         setTxtWelcome();
+        if (String.valueOf(txtWelcome.getText()).equals("")){
+            txtWelcome.setText("Đăng nhập");
+        }
+        txtWelcome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(NlpUtils.removeAccent(String.valueOf(txtWelcome.getText())).equals(NlpUtils.removeAccent("Đăng nhập"))){
+                    openLoginPage();
+                }
+            }
+        });
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             //Xử lý sự kiện khi nút đang xuất đươợc nhấn
             @Override
             public void onClick(View v) {
-                openLoginPage();
+                if(NlpUtils.removeAccent(String.valueOf(txtWelcome.getText())).equals(NlpUtils.removeAccent("Đăng nhập"))){
+                    Toast.makeText(getActivity(), "Bạn chưa đăng nhập", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    openLoginPage();
+                }
             }
         });
         adapter = new MusicianAdapter();// Khởi tạo adapter

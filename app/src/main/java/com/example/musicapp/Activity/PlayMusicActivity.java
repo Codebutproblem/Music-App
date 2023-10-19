@@ -4,9 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 import com.example.musicapp.Class.Music;
 import com.example.musicapp.R;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -143,6 +146,7 @@ public class PlayMusicActivity extends AppCompatActivity {
         });
     }
 
+
     // Phương thức để chuyển đến bài hát kế tiếp trong danh sách
     private void nextSong(){
         position++;
@@ -231,8 +235,17 @@ public class PlayMusicActivity extends AppCompatActivity {
         seekBar.setMax(mediaPlayer.getDuration());
     }
     private void khoiTaoMediaPlayer(){
+        mediaPlayer = new MediaPlayer();
         // Khởi tạo MediaPlayer để phát nhạc từ tệp âm thanh tại vị trí hiện tại trong danh sách nhạc
-        mediaPlayer = MediaPlayer.create(PlayMusicActivity.this, arrayMusic.get(position).getFile());
+        try {
+            do{
+                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                mediaPlayer.setDataSource(arrayMusic.get(position).getLinkMp3());
+                mediaPlayer.prepare();
+            }while (mediaPlayer == null);
+        } catch (Exception e) {
+            Log.e("ERROR",e.getMessage());
+        }
     }
     private void setMusicName() {
         // Đặt tên bài hát hiện tại lên giao diện

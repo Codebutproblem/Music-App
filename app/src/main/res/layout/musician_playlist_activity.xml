@@ -8,21 +8,28 @@
     tools:context= ".Activity.MusicianPlaylistActivity"
     android:background="#454343">
     <RelativeLayout
-        android:padding="10dp"
-        android:id="@+id/header_playlist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/border">
-        <TextView
-            android:id="@+id/text_name"
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
+        android:id="@+id/header_playlist"
+        android:background="#99000000">
+        <RelativeLayout
+            android:id="@+id/inner_header_playlist"
+            android:padding="10dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Musician Name"
-            android:textSize="25dp"
-            android:textColor="#FFFFFF"
-            />
+            android:background="@drawable/border">
+            <TextView
+                android:id="@+id/text_name"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Musician Name"
+                android:textSize="25dp"
+                android:textColor="#FFFFFF"
+                />
+        </RelativeLayout>
     </RelativeLayout>
+
     <ListView
         android:layout_below="@id/header_playlist"
         android:id="@+id/play_list"
