@@ -20,6 +20,9 @@ import com.example.musicapp.Class.Book;
 import com.example.musicapp.Class.LibraryData;
 import com.example.musicapp.Class.Music;
 import com.example.musicapp.Class.MusicData;
+import com.example.musicapp.Class.Musician;
+import com.example.musicapp.Class.MusicianData;
+import com.example.musicapp.Class.NlpUtils;
 import com.example.musicapp.R;
 
 import java.util.ArrayList;
@@ -62,7 +65,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         if(book.getCategory().equals("favMusic")){
             Intent it = new Intent(mContext, PlayMusicActivity.class);
             LibraryData libraryData = new LibraryData();
-            ArrayList<Book>books = libraryData.getTableFavData("FAV"+LoginActivity.getUsername());
+            ArrayList<Book>books = libraryData.getFavlist();
             ArrayList<Music> arrayMusic = MusicData.getMusicList(books);
             PlayMusicActivity.setArrayMusic(arrayMusic);
             it.putExtra("position",MusicData.getPosition(book.getId(),arrayMusic) + "");
@@ -72,7 +75,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         if(book.getCategory().equals("hisMusic")){
             Intent it = new Intent(mContext, PlayMusicActivity.class);
             LibraryData libraryData = new LibraryData();
-            ArrayList<Book>books = libraryData.getTableHisData("HIS"+LoginActivity.getUsername());
+            ArrayList<Book>books = libraryData.getHisList();
             ArrayList<Music> arrayMusic = MusicData.getMusicList(books);
             PlayMusicActivity.setArrayMusic(arrayMusic);
             it.putExtra("position",MusicData.getPosition(book.getId(),arrayMusic) + "");
@@ -81,7 +84,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         }
         if (book.getCategory().equals("musician")){
             Intent it = new Intent(mContext, MusicianPlaylistActivity.class);
-            it.putExtra("musician",book.getTitle());
+            it.putExtra("musician",book.getId());
             mContext.startActivity(it);
         }
     }

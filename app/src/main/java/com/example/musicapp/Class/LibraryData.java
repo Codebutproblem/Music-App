@@ -16,14 +16,14 @@ public class LibraryData {
         ConClass con = new ConClass();
         connection = con.conclass();
     }
-    public ArrayList<Book> getTableFavData(String table){
+    public ArrayList<Book> getFavlist(){
         ArrayList<Book> resultArray = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM " + table;
+            String sql = "SELECT * FROM FAVOURITE";
             Statement stm = connection.createStatement();
             ResultSet rs = stm.executeQuery(sql);
             while (rs.next()){
-                Music music = MusicData.getMusicMap().get(rs.getString(1));
+                Music music = MusicData.getMusicMap().get(rs.getString(2));
                 resultArray.add(new Book(music.getId(),"favMusic",music.getHinhNen(),music.getTenNhac()));
             }
             return resultArray;
@@ -32,15 +32,15 @@ public class LibraryData {
             throw new RuntimeException(e);
         }
     }
-    public ArrayList<Book> getTableHisData(String table){
+    public ArrayList<Book> getHisList(){
         ArrayList<Book> resultArray = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM " + table + " ORDER BY hisDate DESC";
+            String sql = "SELECT * FROM HISTORY ORDER BY PLAY_HISTORY DESC";
             Statement stm = connection.createStatement();
             ResultSet rs = stm.executeQuery(sql);
             int cnt = 0;
             while (rs.next() && cnt < 8){
-                Music music = MusicData.getMusicMap().get(rs.getString(1));
+                Music music = MusicData.getMusicMap().get(rs.getString(2));
                 resultArray.add(new Book(music.getId(),"hisMusic",music.getHinhNen(),music.getTenNhac()));
                 cnt++;
             }
@@ -56,7 +56,7 @@ public class LibraryData {
         Collections.shuffle(musicianListOld);
         for(int i = 0 ; i < 7; i++){
             if(i < musicianListOld.size()){
-                musicianList.add(new Book("musician",musicianListOld.get(i).getImageId(),musicianListOld.get(i).getName()));
+                musicianList.add(new Book(musicianListOld.get(i).getId(),"musician",musicianListOld.get(i).getImageId(),musicianListOld.get(i).getName()));
             }
         }
         return musicianList;

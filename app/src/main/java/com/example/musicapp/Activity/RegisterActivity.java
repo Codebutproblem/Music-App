@@ -72,37 +72,12 @@ public class RegisterActivity extends AppCompatActivity {
 
     // Thêm dữ liệu người dùng vào cơ sở dữ liệu
     private void insertData(String user, String pass) {
-        String query = "INSERT INTO ACCOUNT VALUES(?,?,?,?)";
+        String query = "INSERT INTO ACCOUNT VALUES(?,?)";
         try {
             PreparedStatement stm = connection.prepareStatement(query);
             stm.setString(1,user);
             stm.setString(2,pass);
-            stm.setString(3,"FAV"+user);
-            createFavTable("FAV"+user);
-            stm.setString(4,"HIS"+user);
-            createHisTable("HIS"+user);
             stm.execute();
-            connection.close();
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    private void createFavTable(String tableName){
-        String sql = "CREATE TABLE "+ tableName +"(Id VARCHAR(255),PRIMARY KEY(Id));";
-        try {
-            Statement stm = connection.createStatement();
-            stm.execute(sql);
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    private void createHisTable(String tableName){
-        String sql = "CREATE TABLE "+ tableName +"(Id VARCHAR(255),hisDate DATETIME);";
-        try {
-            Statement stm = connection.createStatement();
-            stm.execute(sql);
         }
         catch (SQLException e) {
             throw new RuntimeException(e);

@@ -12,7 +12,7 @@ public class ConClass {
     Connection con;
     @SuppressLint("NewApi")
     public Connection conclass() {
-        String ip = "192.168.1.11", port = "1433", db = "AccountMusicApp", username = "sa", password = "123";
+        String ip = "192.168.0.114", port = "1433", db = "AccountMusicApp", username = "sa", password = "123";
         StrictMode.ThreadPolicy a = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(a);
         String connectURL = null;

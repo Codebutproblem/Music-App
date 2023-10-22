@@ -47,11 +47,13 @@ public class MusicianPlaylistActivity extends AppCompatActivity{
         AnhXa();
 
         Intent it = getIntent();
+
+        String id = it.getStringExtra("musician");
         String musicianName = it.getStringExtra("musician");
 
-        Musician musician = MusicianData.getMusicianMap().get(musicianName);
+        Musician musician = MusicianData.getMusicianHashMap().get(id);
         arrayMusic = MusicData.musicianList(musicianName,MusicData.getArrayMusic());
-        name.setText(musicianName);
+        name.setText(musician.getName());
         layoutPlayList.setBackgroundResource(musician.getImageBg());
 
 

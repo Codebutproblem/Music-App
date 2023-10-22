@@ -96,7 +96,7 @@ public class MusicData {
         }
     }
     private static boolean checkContains(String id){
-        String query = "SELECT * FROM MUSIC WHERE Id = '"+ id + "'";
+        String query = "SELECT * FROM MUSIC WHERE MUSIC_ID = '"+ id + "'";
         try {
             Statement stm = connection.createStatement();
             ResultSet rs = stm.executeQuery(query);

@@ -3,6 +3,7 @@ package com.example.musicapp.Class;
 import java.io.Serializable;
 
 public class Musician implements Serializable,Comparable<Musician> {
+    private String Id;
     private int imageId; // ID của tài liệu hình ảnh đại diện cho nghệ sĩ
     private int imageBg;
     private String name; // Tên của nghệ sĩ
@@ -13,8 +14,13 @@ public class Musician implements Serializable,Comparable<Musician> {
         this.imageBg = imageBg;
         this.name = name;
     }
-
     //Các phương thức Getter và Setter
+    public String getId() {
+        return Id;
+    }
+    public void setId(String id) {
+        Id = id;
+    }
     public int getImageBg() {
         return imageBg;
     }

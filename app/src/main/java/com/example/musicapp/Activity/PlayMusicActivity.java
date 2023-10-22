@@ -46,7 +46,7 @@ public class PlayMusicActivity extends AppCompatActivity {
     private Animation animation;
     private static ArrayList<Music> arrayMusic;
     private Connection connection;
-    private String favTableName,hisTableName,parentPage;
+    private String parentPage;
     private int position;
     private boolean replay = false;
     private GestureDetector gestureDetector;
@@ -71,7 +71,6 @@ public class PlayMusicActivity extends AppCompatActivity {
         setTimeTotal();
         if(LoginActivity.checkLogin()){
             ConnectionSQL();
-            setTableName();
             setFavButton();
         }
 
@@ -172,10 +171,11 @@ public class PlayMusicActivity extends AppCompatActivity {
         if (!LoginActivity.checkLogin()){
             return;
         }
-        String sql = "INSERT INTO " + hisTableName +" VALUES(?,CURRENT_TIMESTAMP)";
+        String sql = "INSERT INTO HISTORY VALUES(?,?,CURRENT_TIMESTAMP)";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1,arrayMusic.get(position).getId());
+            stm.setString(1,LoginActivity.getUsername());
+            stm.setString(2,arrayMusic.get(position).getId());
             stm.execute();
         }
         catch (SQLException e) {
@@ -183,17 +183,13 @@ public class PlayMusicActivity extends AppCompatActivity {
         }
     }
 
-    private void setTableName() {
-        favTableName = "FAV" + LoginActivity.getUsername();
-        hisTableName = "HIS" + LoginActivity.getUsername();
-    }
 
     private void ConnectionSQL() {
         ConClass con = new ConClass();
         connection = con.conclass();
     }
     private void setFavButton() {
-        if(checkContains(arrayMusic.get(position).getId(),favTableName)){
+        if(checkContains(arrayMusic.get(position).getId())){
             favBtn.setImageResource(R.drawable.ic_favorite);
         }
         else{
@@ -202,7 +198,7 @@ public class PlayMusicActivity extends AppCompatActivity {
     }
 
     private int cntLike(String id){
-        String sql = "SELECT likeCount FROM MUSIC WHERE Id = '" + id + "'";
+        String sql = "SELECT LIKE_COUNT FROM MUSIC WHERE MUSIC_ID = '" + id + "'";
         try {
             Statement stm = connection.createStatement();
             ResultSet rs = stm.executeQuery(sql);
@@ -216,7 +212,7 @@ public class PlayMusicActivity extends AppCompatActivity {
     }
 
     private void addLike(String id){
-        String sql = "UPDATE MUSIC SET likeCount = ? WHERE Id = ?";
+        String sql = "UPDATE MUSIC SET LIKE_COUNT = ? WHERE MUSIC_ID = ?";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1,cntLike(id)+1);
@@ -227,7 +223,7 @@ public class PlayMusicActivity extends AppCompatActivity {
         }
     }
     private void subLike(String id){
-        String sql = "UPDATE MUSIC SET likeCount = ? WHERE Id = ?";
+        String sql = "UPDATE MUSIC SET LIKE_COUNT = ? WHERE MUSIC_ID = ?";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
             if (cntLike(id) > 0){
@@ -247,7 +243,7 @@ public class PlayMusicActivity extends AppCompatActivity {
             Toast.makeText(this, "Bạn chưa đăng nhập", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (checkContains(arrayMusic.get(position).getId(),favTableName)){
+        if (checkContains(arrayMusic.get(position).getId())){
             favBtn.setImageResource(R.drawable.ic_favorite_border);
             deleteMusic(arrayMusic.get(position).getId());
             subLike(arrayMusic.get(position).getId());
@@ -262,7 +258,7 @@ public class PlayMusicActivity extends AppCompatActivity {
     }
 
     private void deleteMusic(String id){
-        String sql = "DELETE FROM " + favTableName + " WHERE Id = '" + id + "'";
+        String sql = "DELETE FROM FAVOURITE WHERE MUSIC_ID = '" + id + "' AND USERNAME = '" + LoginActivity.getUsername() +"'" ;
         try {
             Statement stm = connection.createStatement();
             stm.execute(sql);
@@ -272,18 +268,19 @@ public class PlayMusicActivity extends AppCompatActivity {
         }
     }
     private void insertMusic(String id){
-        String sql = "INSERT INTO "+ favTableName + " VALUES(?)";
+        String sql = "INSERT INTO FAVOURITE VALUES(?,?)";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1,id);
+            stm.setString(1,LoginActivity.getUsername());
+            stm.setString(2,id);
             stm.execute();
         }
         catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-    private boolean checkContains(String id,String table){
-        String query = "SELECT * FROM "+ table +" WHERE Id = '"+ id + "'";
+    private boolean checkContains(String id){
+        String query = "SELECT * FROM FAVOURITE WHERE USERNAME = '"+ LoginActivity.getUsername() + "' AND MUSIC_ID = '" + id + "'";
         try {
             Statement stm = connection.createStatement();
             ResultSet rs = stm.executeQuery(query);

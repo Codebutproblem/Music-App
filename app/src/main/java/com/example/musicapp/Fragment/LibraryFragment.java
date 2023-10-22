@@ -79,8 +79,8 @@ public class LibraryFragment extends Fragment {
             LibraryData libraryData = new LibraryData();
 
             musicianList =libraryData.getMusicianData();
-            musicList = libraryData.getTableFavData("FAV"+LoginActivity.getUsername());
-            historyList = libraryData.getTableHisData("HIS"+LoginActivity.getUsername());
+            musicList = libraryData.getFavlist();
+            historyList = libraryData.getHisList();
         }
 
 
