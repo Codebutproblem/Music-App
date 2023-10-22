@@ -1,5 +1,6 @@
-package com.example.musicapp.Class;
+package com.example.musicapp.Data;
 
+import com.example.musicapp.Class.Musician;
 import com.example.musicapp.R;
 
 import java.util.ArrayList;

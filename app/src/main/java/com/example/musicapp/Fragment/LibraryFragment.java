@@ -17,20 +17,11 @@ import com.example.musicapp.Activity.LoginActivity;
 import com.example.musicapp.Adapter.CategoryAdapter;
 import com.example.musicapp.Class.Book;
 import com.example.musicapp.Class.Category;
-import com.example.musicapp.Class.LibraryData;
-import com.example.musicapp.Class.Music;
-import com.example.musicapp.Class.MusicData;
-import com.example.musicapp.Class.Musician;
-import com.example.musicapp.Class.MusicianData;
-import com.example.musicapp.ConnectionSQL.ConClass;
+import com.example.musicapp.Data.LibraryData;
 import com.example.musicapp.R;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collections;
 
 //Chưa làm =))
 public class LibraryFragment extends Fragment {

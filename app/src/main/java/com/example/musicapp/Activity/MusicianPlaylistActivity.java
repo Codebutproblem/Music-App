@@ -6,16 +6,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.musicapp.Adapter.MusicAdapter;
 import com.example.musicapp.Class.Music;
-import com.example.musicapp.Class.MusicData;
+import com.example.musicapp.Data.MusicData;
 import com.example.musicapp.Class.Musician;
-import com.example.musicapp.Class.MusicianData;
+import com.example.musicapp.Data.MusicianData;
 import com.example.musicapp.R;
 
 import java.util.ArrayList;

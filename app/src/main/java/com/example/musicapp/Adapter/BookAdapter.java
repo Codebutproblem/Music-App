@@ -2,7 +2,6 @@ package com.example.musicapp.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.musicapp.Activity.LoginActivity;
 import com.example.musicapp.Activity.MusicianPlaylistActivity;
 import com.example.musicapp.Activity.PlayMusicActivity;
 import com.example.musicapp.Class.Book;
-import com.example.musicapp.Class.LibraryData;
+import com.example.musicapp.Data.LibraryData;
 import com.example.musicapp.Class.Music;
-import com.example.musicapp.Class.MusicData;
-import com.example.musicapp.Class.Musician;
-import com.example.musicapp.Class.MusicianData;
-import com.example.musicapp.Class.NlpUtils;
+import com.example.musicapp.Data.MusicData;
 import com.example.musicapp.R;
 
 import java.util.ArrayList;

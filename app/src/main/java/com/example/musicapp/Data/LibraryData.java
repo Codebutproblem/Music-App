@@ -1,5 +1,8 @@
-package com.example.musicapp.Class;
+package com.example.musicapp.Data;
 
+import com.example.musicapp.Class.Book;
+import com.example.musicapp.Class.Music;
+import com.example.musicapp.Class.Musician;
 import com.example.musicapp.ConnectionSQL.ConClass;
 
 import java.sql.Connection;

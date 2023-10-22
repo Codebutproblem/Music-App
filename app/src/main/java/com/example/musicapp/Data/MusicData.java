@@ -1,5 +1,8 @@
-package com.example.musicapp.Class;
+package com.example.musicapp.Data;
 
+import com.example.musicapp.Class.Book;
+import com.example.musicapp.Class.Music;
+import com.example.musicapp.Class.NlpUtils;
 import com.example.musicapp.ConnectionSQL.ConClass;
 import com.example.musicapp.R;
 

@@ -21,7 +21,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.musicapp.Class.Music;
 import com.example.musicapp.Adapter.MusicAdapter;
-import com.example.musicapp.Class.MusicData;
+import com.example.musicapp.Data.MusicData;
 import com.example.musicapp.Activity.PlayMusicActivity;
 import com.example.musicapp.R;
 

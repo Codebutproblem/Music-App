@@ -16,13 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.musicapp.Activity.LoginActivity;
-import com.example.musicapp.Class.Musician;
 import com.example.musicapp.Adapter.MusicianAdapter;
-import com.example.musicapp.Class.MusicianData;
-import com.example.musicapp.Class.NlpUtils;
+import com.example.musicapp.Data.MusicianData;
 import com.example.musicapp.R;
-
-import java.util.ArrayList;
 
 // Fragment chứa danh sách các nhạc sĩ được hiển thị trong giao diện Home
 public class HomeFragment extends Fragment {
