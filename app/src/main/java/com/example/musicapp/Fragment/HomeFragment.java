@@ -28,22 +28,25 @@ import java.util.ArrayList;
 public class HomeFragment extends Fragment {
     private RecyclerView rcvMusician;// RecyclerView để hiển thị danh sách nhạc sĩ
     private MusicianAdapter adapter;// Adapter để quản lý danh sách nhạc sĩ
-    private TextView txtWelcome; //Lời chao username
+    private static TextView userName; //Lời chao username
     private ImageButton logoutBtn;//Nút đăng xuất
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Gắn layout fragment_home.xml vào fragment
         View view = inflater.inflate(R.layout.fragment_home,container,false);
         AnhXa(view);// Ánh xạ các thành phần trong layout
-        setTxtWelcome();
-        if (String.valueOf(txtWelcome.getText()).equals("")){
-            txtWelcome.setText("Đăng nhập");
+        if (!LoginActivity.checkLogin()){
+            userName.setText("Đăng nhập");
         }
-        txtWelcome.setOnClickListener(new View.OnClickListener() {
+        else{
+            setUserName();
+        }
+        userName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(NlpUtils.removeAccent(String.valueOf(txtWelcome.getText())).equals(NlpUtils.removeAccent("Đăng nhập"))){
+                if(!LoginActivity.checkLogin()){
                     openLoginPage();
                 }
             }
@@ -52,7 +55,7 @@ public class HomeFragment extends Fragment {
             //Xử lý sự kiện khi nút đang xuất đươợc nhấn
             @Override
             public void onClick(View v) {
-                if(NlpUtils.removeAccent(String.valueOf(txtWelcome.getText())).equals(NlpUtils.removeAccent("Đăng nhập"))){
+                if(!LoginActivity.checkLogin()){
                     Toast.makeText(getActivity(), "Bạn chưa đăng nhập", Toast.LENGTH_SHORT).show();
                 }
                 else{
@@ -67,23 +70,23 @@ public class HomeFragment extends Fragment {
         rcvMusician.setAdapter(adapter);// Gắn adapter vào RecyclerView
         return view;// Trả về giao diện fragment đã được tạo
     }
-
     //Quay về trang đăng nhập
     private void openLoginPage() {
         Intent it = new Intent(this.getActivity(), LoginActivity.class);
+        getActivity().finish();
         startActivity(it);
     }
 
     //Đặt lời chào tới user
-    private void setTxtWelcome() {
+    private void setUserName() {
         Intent it = getActivity().getIntent();
         String username = it.getStringExtra("user");
-        txtWelcome.setText(username);
+        userName.setText(username);
     }
 
     // Phương thức để ánh xạ các thành phần trong layout
     private void AnhXa(View view) {
-        txtWelcome = view.findViewById(R.id.txtwelcome);
+        userName = view.findViewById(R.id.txtwelcome);
         logoutBtn = view.findViewById(R.id.logout);
         rcvMusician = view.findViewById(R.id.rcv_musician);
     }

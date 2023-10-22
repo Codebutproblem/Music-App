@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
     // Phương thức này được sử dụng để cài đặt ViewPager và các sự kiện liên quan
     private void setupViewPager() {
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);

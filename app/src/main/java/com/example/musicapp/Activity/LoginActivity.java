@@ -21,13 +21,26 @@ import java.sql.Statement;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText eUsername,ePassword;
-    private Button loginBtn;
+    private Button loginBtn,guestBtn;
     private TextView tvtRegister,alertLogin;
     private Connection connection;
+    private static boolean login = false;
+    private static String username = null;
+
+    public static boolean checkLogin(){
+        return login;
+    }
+
+    public static String getUsername() {
+        return username;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        login = false;
         AnhXa();// Gán các UI element vào biến tương ứng
 
         // Thiết lập sự kiện click cho nút đăng nhập
@@ -40,11 +53,20 @@ public class LoginActivity extends AppCompatActivity {
                 String pass = String.valueOf(ePassword.getText());
                 // Kiểm tra đăng nhập có thành công không
                 if(checkLogin(user,pass) && !user.equals("") && !user.equals("Dang nhap") && !pass.equals("")){
+                    login = true;
+                    username = user;
                     openMainPage(user);// Mở trang chính cho người dùng
                 }
                 else{
                     alertLogin.setText("Log in failed");
                 }
+            }
+        });
+        guestBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                login = false;
+                openMainPage();
             }
         });
 
@@ -67,6 +89,10 @@ public class LoginActivity extends AppCompatActivity {
     private void openMainPage(String user){
         Intent it = new Intent(this, MainActivity.class);
         it.putExtra("user",user);
+        startActivity(it);
+    }
+    private void openMainPage() {
+        Intent it = new Intent(this, MainActivity.class);
         startActivity(it);
     }
 
@@ -95,5 +121,6 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.loginbtn);
         tvtRegister = findViewById(R.id.register_page);
         alertLogin = findViewById(R.id.alert);
+        guestBtn = findViewById(R.id.guestbtn);
     }
 }

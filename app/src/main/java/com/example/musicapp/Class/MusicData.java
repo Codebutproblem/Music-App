@@ -1,15 +1,30 @@
 package com.example.musicapp.Class;
 
+import com.example.musicapp.ConnectionSQL.ConClass;
 import com.example.musicapp.R;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 public class MusicData {
+    private static ArrayList<Music> arrayMusic;
+    private static Connection connection;
+    private static HashMap<String,Music> musicMap;
+
+    public static HashMap<String, Music> getMusicMap() {
+        return musicMap;
+    }
 
     // Phương thức để lấy danh sách các bản nhạc
     public static ArrayList<Music> getArrayMusic(){
-        ArrayList<Music> arrayMusic = new ArrayList<>();
+        arrayMusic = new ArrayList<>();
+        musicMap = new HashMap<>();
         // Thêm các bản nhạc vào danh sách
         arrayMusic.add(new Music("Imagine Dragons - Enemy", "Imagine Dragons", R.drawable.enemy_arcane,"https://docs.google.com/uc?id=1KXAl9Kfh53KVISOWn8_tH02CwJmN13wJ"));
         arrayMusic.add(new Music("Imagine Dragons - Demons","Imagine Dragons",R.drawable.demons,"https://docs.google.com/uc?id=1gQ3SVAsFcR3j7i8YVX66BPjQa1ZL50E1"));
@@ -37,11 +52,63 @@ public class MusicData {
         // Sắp xếp danh sách bản nhạc theo thứ tự bảng chữ cái (không phân biệt hoa thường)
         Collections.sort(arrayMusic);
         for(int i = 0; i < arrayMusic.size(); i++){
-            arrayMusic.get(i).setId(String.format("S%05d",i));
+            arrayMusic.get(i).setId(String.format("MC%05d",i+1));
+            musicMap.put(arrayMusic.get(i).getId(),arrayMusic.get(i));
+        }
+        ConClass con = new ConClass();
+        connection = con.conclass();
+        if(connection != null){
+            addMusic();
+            setLikeCount();
         }
         return arrayMusic;
     }
 
+    private static void setLikeCount() {
+        String sql = "SELECT * FROM MUSIC";
+        try {
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()){
+                int i = Integer.parseInt(rs.getString(1).substring(2))-1;
+                arrayMusic.get(i).setLikeCount(rs.getInt(2));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private static void addMusic(){
+        for(Music x : arrayMusic){
+            if(!checkContains(x.getId())){
+                String sql = "INSERT INTO MUSIC VALUES(?,?)";
+                try {
+                    PreparedStatement stm = connection.prepareStatement(sql);
+                    stm.setString(1,x.getId());
+                    stm.setInt(2,0);
+                    stm.execute();
+                }
+                catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+    private static boolean checkContains(String id){
+        String query = "SELECT * FROM MUSIC WHERE Id = '"+ id + "'";
+        try {
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+            if(rs.next()){
+                return true;
+            }
+            return false;
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     // Phương thức để lọc danh sách các bản nhạc theo tên của nghệ sĩ (tác giả)
     public static ArrayList<Music> musicianList(String musicianName, ArrayList<Music>musicArrayList){
         ArrayList<Music>arrayMusic = new ArrayList<>();
@@ -53,5 +120,22 @@ public class MusicData {
             }
         }
         return arrayMusic;
+    }
+    public static ArrayList<Music> getMusicList(ArrayList<Book>books){
+        ArrayList<Music>resultList = new ArrayList<>();
+        for(Book book: books){
+            resultList.add(musicMap.get(book.getId()));
+        }
+        return resultList;
+    }
+    public static int getPosition(String Id,ArrayList<Music>arrayList){
+        int res = 0;
+        for(int i = 0; i < arrayList.size(); i++){
+            if (arrayList.get(i).getId().equals(Id)){
+                res = i;
+                break;
+            }
+        }
+        return res;
     }
 }

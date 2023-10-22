@@ -6,16 +6,20 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg"
     tools:context=".Activity.LoginActivity">
+
     <TextView
         android:id="@+id/signin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sign in"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:text="Đăng nhập"
         android:textColor="@color/white"
         android:textSize="35dp"
-        android:textStyle="bold"
-        android:layout_margin="50dp"
-        android:gravity="center"/>
+        android:textStyle="bold" />
     <EditText
         android:id="@+id/username"
         android:layout_width="match_parent"
@@ -58,13 +62,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/password"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="30dp"
+        android:layout_alignParentRight="true"
         android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="40dp"
         android:layout_marginBottom="30dp"
         android:backgroundTint="@color/design_default_color_secondary"
         android:text="Đăng nhập" />
+    <Button
+        android:id="@+id/guestbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/password"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:paddingHorizontal="45dp"
+        android:backgroundTint="#F6B801"
+        android:text="Khách" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

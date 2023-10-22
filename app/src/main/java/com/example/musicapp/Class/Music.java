@@ -8,6 +8,7 @@ public class Music implements Comparable<Music>{
     private String caSi; // Tên của tác giả của bản nhạc
     private int hinhNen; // Tài liệu hình ảnh đại diện cho bản nhạc
     private String linkMp3; // Tài liệu âm thanh của bản nhạc
+    private int likeCount; //Lượt thích
 
     // Constructor (Hàm khởi tạo)
     public Music(String tenNhac, String caSi, int hinhNen, String linkMp3) {
@@ -15,6 +16,15 @@ public class Music implements Comparable<Music>{
         this.caSi = caSi;
         this.hinhNen = hinhNen;
         this.linkMp3 = linkMp3;
+    }
+
+
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
     }
 
     public String getId() {

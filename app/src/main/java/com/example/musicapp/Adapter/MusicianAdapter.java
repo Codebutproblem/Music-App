@@ -61,9 +61,7 @@ public class MusicianAdapter extends RecyclerView.Adapter<MusicianAdapter.Musici
     // Phương thức để chuyển đến màn hình chi tiết của một nhạc sĩ khi người dùng nhấn vào mục
     private void onClickGoToDetail(Musician musician){
         Intent it = new Intent(context, MusicianPlaylistActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("object_musician",musician);
-        it.putExtras(bundle);
+        it.putExtra("musician",musician.getName());
         context.startActivity(it);
     }
     @Override

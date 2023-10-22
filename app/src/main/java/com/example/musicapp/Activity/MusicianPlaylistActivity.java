@@ -15,6 +15,7 @@ import com.example.musicapp.Adapter.MusicAdapter;
 import com.example.musicapp.Class.Music;
 import com.example.musicapp.Class.MusicData;
 import com.example.musicapp.Class.Musician;
+import com.example.musicapp.Class.MusicianData;
 import com.example.musicapp.R;
 
 import java.util.ArrayList;
@@ -45,21 +46,14 @@ public class MusicianPlaylistActivity extends AppCompatActivity{
         // Ánh xạ các thành phần giao diện
         AnhXa();
 
-        // Lấy dữ liệu từ Intent
-        Bundle bundle = getIntent().getExtras();
-        if(bundle == null){
-            return;
-        }
-        // Lấy thông tin về ca sỹ từ Intent
-        Musician musician = (Musician) bundle.get("object_musician");
-        String musicianName = musician.getName();
+        Intent it = getIntent();
+        String musicianName = it.getStringExtra("musician");
 
-        // Lọc danh sách nhạc theo ca sỹ
+        Musician musician = MusicianData.getMusicianMap().get(musicianName);
         arrayMusic = MusicData.musicianList(musicianName,MusicData.getArrayMusic());
-
-        // Hiển thị thông tin ca sỹ và hình ảnh nền
         name.setText(musicianName);
         layoutPlayList.setBackgroundResource(musician.getImageBg());
+
 
         // Tạo adapter cho danh sách nhạc
         adapter = new MusicAdapter(MusicianPlaylistActivity.this, R.layout.music_line, arrayMusic);
@@ -79,6 +73,7 @@ public class MusicianPlaylistActivity extends AppCompatActivity{
         PlayMusicActivity.setArrayMusic(arrayMusic);
         it = new Intent(this,PlayMusicActivity.class);
         it.putExtra("position",i + "");
+        it.putExtra("from","MusicianPlaylist");
         startActivity(it);
     }
 
@@ -87,5 +82,13 @@ public class MusicianPlaylistActivity extends AppCompatActivity{
         layoutPlayList = findViewById(R.id.layout_play_list);
         name = findViewById(R.id.text_name);
         lvMusic = findViewById(R.id.play_list);
+    }
+    @Override
+    public void onBackPressed() {
+        // Dừng phát nhạc khi người dùng bấm nút "Back"
+        Intent it = new Intent(this,MainActivity.class);
+        it.putExtra("user",LoginActivity.getUsername());
+        startActivity(it);
+        super.onBackPressed();
     }
 }

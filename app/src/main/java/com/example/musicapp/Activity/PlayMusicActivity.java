@@ -18,11 +18,19 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.musicapp.Class.Music;
+import com.example.musicapp.ConnectionSQL.ConClass;
+import com.example.musicapp.Fragment.HomeFragment;
 import com.example.musicapp.R;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -33,10 +41,12 @@ public class PlayMusicActivity extends AppCompatActivity {
     private TextView musicName, runTime, totalTime;
     private CircleImageView musicImage;
     private SeekBar seekBar;
-    private ImageButton playPauseButton,preButton,nextButton,replayButton;
+    private ImageButton playPauseButton,preButton,nextButton,replayButton,favBtn;
     private MediaPlayer mediaPlayer;
     private Animation animation;
     private static ArrayList<Music> arrayMusic;
+    private Connection connection;
+    private String favTableName,hisTableName,parentPage;
     private int position;
     private boolean replay = false;
     private GestureDetector gestureDetector;
@@ -52,13 +62,18 @@ public class PlayMusicActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_music);
-        setAnimation();
         AnhXa();
+        setAnimation();
         getData();
         setMusicPlayImage();
         setMusicName();
         khoiTaoMediaPlayer();
         setTimeTotal();
+        if(LoginActivity.checkLogin()){
+            ConnectionSQL();
+            setTableName();
+            setFavButton();
+        }
 
         // Xử lý sự kiện khi nút Play/Pause được nhấn
         playPauseButton.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +89,7 @@ public class PlayMusicActivity extends AppCompatActivity {
                     mediaPlayer.start();
                     musicImage.startAnimation(animation);
                     playPauseButton.setImageResource(R.drawable.ic_pause);
+                    addHistory();
                 }
                 updateRunTime();
             }
@@ -115,6 +131,7 @@ public class PlayMusicActivity extends AppCompatActivity {
                     playPauseButton.setImageResource(R.drawable.ic_pause);
                     musicImage.startAnimation(animation);
                     updateRunTime();
+                    addHistory();
                     mediaPlayer.start();
                 }
             }
@@ -134,7 +151,12 @@ public class PlayMusicActivity extends AppCompatActivity {
                 }
             }
         });
-
+        favBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                favBtnClick();
+            }
+        });
         // Thiết lập Gesture Detector để nhận diện cử chỉ vuốt trên màn hình
         gestureDetector = new GestureDetector(this, new MyGesture());
         playMusicLayout.setOnTouchListener(new View.OnTouchListener() {
@@ -146,6 +168,134 @@ public class PlayMusicActivity extends AppCompatActivity {
         });
     }
 
+    private void addHistory() {
+        if (!LoginActivity.checkLogin()){
+            return;
+        }
+        String sql = "INSERT INTO " + hisTableName +" VALUES(?,CURRENT_TIMESTAMP)";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1,arrayMusic.get(position).getId());
+            stm.execute();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void setTableName() {
+        favTableName = "FAV" + LoginActivity.getUsername();
+        hisTableName = "HIS" + LoginActivity.getUsername();
+    }
+
+    private void ConnectionSQL() {
+        ConClass con = new ConClass();
+        connection = con.conclass();
+    }
+    private void setFavButton() {
+        if(checkContains(arrayMusic.get(position).getId(),favTableName)){
+            favBtn.setImageResource(R.drawable.ic_favorite);
+        }
+        else{
+            favBtn.setImageResource(R.drawable.ic_favorite_border);
+        }
+    }
+
+    private int cntLike(String id){
+        String sql = "SELECT likeCount FROM MUSIC WHERE Id = '" + id + "'";
+        try {
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            if (rs.next()){
+                return rs.getInt(1);
+            }
+            return 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void addLike(String id){
+        String sql = "UPDATE MUSIC SET likeCount = ? WHERE Id = ?";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1,cntLike(id)+1);
+            stm.setString(2,id);
+            stm.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private void subLike(String id){
+        String sql = "UPDATE MUSIC SET likeCount = ? WHERE Id = ?";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            if (cntLike(id) > 0){
+                stm.setInt(1,cntLike(id)-1);
+            }
+            else{
+                stm.setInt(1,0);
+            }
+            stm.setString(2,id);
+            stm.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private void favBtnClick() {
+        if(!LoginActivity.checkLogin()){
+            Toast.makeText(this, "Bạn chưa đăng nhập", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (checkContains(arrayMusic.get(position).getId(),favTableName)){
+            favBtn.setImageResource(R.drawable.ic_favorite_border);
+            deleteMusic(arrayMusic.get(position).getId());
+            subLike(arrayMusic.get(position).getId());
+            Toast.makeText(this, "Đã xóa khỏi mục yêu thích", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            favBtn.setImageResource(R.drawable.ic_favorite);
+            insertMusic(arrayMusic.get(position).getId());
+            addLike(arrayMusic.get(position).getId());
+            Toast.makeText(this, "Đã thêm vào mục yêu thích", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void deleteMusic(String id){
+        String sql = "DELETE FROM " + favTableName + " WHERE Id = '" + id + "'";
+        try {
+            Statement stm = connection.createStatement();
+            stm.execute(sql);
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private void insertMusic(String id){
+        String sql = "INSERT INTO "+ favTableName + " VALUES(?)";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1,id);
+            stm.execute();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private boolean checkContains(String id,String table){
+        String query = "SELECT * FROM "+ table +" WHERE Id = '"+ id + "'";
+        try {
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+            if(rs.next()){
+                return true;
+            }
+            return false;
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     // Phương thức để chuyển đến bài hát kế tiếp trong danh sách
     private void nextSong(){
@@ -162,6 +312,8 @@ public class PlayMusicActivity extends AppCompatActivity {
         setMusicName();
         setTimeTotal();
         updateRunTime();
+        setFavButton();
+        addHistory();
         musicImage.startAnimation(animation);
         playPauseButton.setImageResource(R.drawable.ic_pause);
         mediaPlayer.start();
@@ -182,6 +334,8 @@ public class PlayMusicActivity extends AppCompatActivity {
         setMusicName();
         setTimeTotal();
         updateRunTime();
+        setFavButton();
+        addHistory();
         musicImage.startAnimation(animation);
         playPauseButton.setImageResource(R.drawable.ic_pause);
         mediaPlayer.start();
@@ -261,6 +415,7 @@ public class PlayMusicActivity extends AppCompatActivity {
         // Lấy dữ liệu vị trí bài hát được chọn từ Intent
         Intent it = getIntent();
         position = Integer.parseInt(it.getStringExtra("position"));
+        parentPage = it.getStringExtra("from");
     }
     private void AnhXa() {
         // Ánh xạ các thành phần giao diện
@@ -274,12 +429,28 @@ public class PlayMusicActivity extends AppCompatActivity {
         preButton = findViewById(R.id.preButton);
         nextButton = findViewById(R.id.nextButton);
         replayButton = findViewById(R.id.replay_button);
+        favBtn = findViewById(R.id.fav_btn);
     }
     @Override
     public void onBackPressed() {
         // Dừng phát nhạc khi người dùng bấm nút "Back"
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
+        }
+        if(parentPage.equals("Search")){
+            Intent it = new Intent(this,MainActivity.class);
+            it.putExtra("user",LoginActivity.getUsername());
+            startActivity(it);
+        }
+        if(parentPage.equals("MusicianPlaylist")){
+            Intent it = new Intent(this,MusicianPlaylistActivity.class);
+            it.putExtra("musician",arrayMusic.get(position).getCaSi());
+            startActivity(it);
+        }
+        if (parentPage.equals("Library")){
+            Intent it = new Intent(this,MainActivity.class);
+            it.putExtra("user",LoginActivity.getUsername());
+            startActivity(it);
         }
         super.onBackPressed();
     }

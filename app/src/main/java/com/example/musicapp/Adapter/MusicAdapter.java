@@ -54,9 +54,10 @@ public class MusicAdapter extends BaseAdapter implements Filterable {
 
 
         // Ánh xạ các thành phần giao diện
-        TextView txtMusicName = (TextView) view.findViewById(R.id.musicName);
-        TextView txtMusicianName = (TextView) view.findViewById(R.id.musicianName);
-        ImageView musicImage = (ImageView) view.findViewById(R.id.musicImage);
+        TextView txtMusicName = view.findViewById(R.id.musicName);
+        TextView txtMusicianName =  view.findViewById(R.id.musicianName);
+        TextView txtLike = view.findViewById(R.id.like_cnt);
+        ImageView musicImage = view.findViewById(R.id.musicImage);
 
         // Lấy thông tin bài nhạc tại vị trí i
         Music music = arrayMusic.get(i);
@@ -64,8 +65,8 @@ public class MusicAdapter extends BaseAdapter implements Filterable {
         // Đặt thông tin bài nhạc lên giao diện
         txtMusicName.setText(music.getTenNhac());
         txtMusicianName.setText(music.getCaSi());
+        txtLike.setText(music.getLikeCount() + "");
         musicImage.setImageResource(music.getHinhNen());
-
         return view;
     }
 

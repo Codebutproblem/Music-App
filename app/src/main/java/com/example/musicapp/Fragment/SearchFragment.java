@@ -77,6 +77,7 @@ public class SearchFragment extends Fragment{
         PlayMusicActivity.setArrayMusic(arrayMusic);
         it = new Intent(getActivity(),PlayMusicActivity.class);
         it.putExtra("position",i + "");// Truyền vị trí âm nhạc được chọn cho trang chơi âm nhạc
+        it.putExtra("from","Search");
         startActivity(it);
     }
 
