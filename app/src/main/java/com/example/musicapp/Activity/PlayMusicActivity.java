@@ -189,6 +189,9 @@ public class PlayMusicActivity extends AppCompatActivity {
         connection = con.conclass();
     }
     private void setFavButton() {
+        if(!LoginActivity.checkLogin()){
+            return;
+        }
         if(checkContains(arrayMusic.get(position).getId())){
             favBtn.setImageResource(R.drawable.ic_favorite);
         }

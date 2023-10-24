@@ -38,7 +38,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("de.hdodenhof:circleimageview:3.1.0")
-    implementation(files("C:\\Users\\Admin\\AndroidStudioProjects\\MusicApp\\app\\libs\\jtds-1.3.1.jar"))
+    implementation(files("C:\\Users\\Admin\\AndroidStudioProjects\\Music-App\\app\\libs\\jtds-1.3.1.jar"))
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
