@@ -10,6 +10,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.musicapp.Class.TableData;
 import com.example.musicapp.Fragment.SearchFragment;
 import com.example.musicapp.R;
 import com.example.musicapp.Adapter.ViewPagerAdapter;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        TableData.create();
 
         // Khai báo và khởi tạo các thành phần giao diện
         navigationView = findViewById(R.id.bottom_nav);
