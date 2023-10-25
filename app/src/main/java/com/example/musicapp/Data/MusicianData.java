@@ -18,10 +18,10 @@ public class MusicianData {
         musicianHashMap = new HashMap<>();
 
         //Thêm nhạc sĩ bằng cách thêm Object ở đây, chạy xong rồi xóa đi cũng được vì nó lưu vào database rồi
-        musicianList.add(new Musician(R.drawable.imagedragons,R.drawable.imagedragons,"Imagine Dragons"));
-        musicianList.add(new Musician(R.drawable.binz,R.drawable.binz2,"Binz"));
-        musicianList.add(new Musician(R.drawable.sontung,R.drawable.sontung,"Sơn Tùng M-TP"));
-        musicianList.add(new Musician(R.drawable.denvau,R.drawable.denvau2,"Đen Vâu"));
+        musicianList.add(new Musician(R.drawable.mc03_imagedragons,R.drawable.mc03_imagedragons,"Imagine Dragons"));
+        musicianList.add(new Musician(R.drawable.mc01_binz,R.drawable.mc01_binz2,"Binz"));
+        musicianList.add(new Musician(R.drawable.mc04_sontung,R.drawable.mc04_sontung,"Sơn Tùng M-TP"));
+        musicianList.add(new Musician(R.drawable.mc02_denvau,R.drawable.mc02_denvau2,"Đen Vâu"));
         //................
         //................
 
@@ -32,7 +32,6 @@ public class MusicianData {
             if (!checkContains(musician)){
                 MusicianDataBase.getInstance(FlashActivity.getContext()).musicianDao().insertMusician(musician);
             }
-
         }
         musicianList = MusicianDataBase.getInstance(FlashActivity.getContext()).musicianDao().getMusicianArray();
         for(Musician musician: musicianList){

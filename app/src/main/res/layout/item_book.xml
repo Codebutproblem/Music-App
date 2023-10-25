@@ -16,7 +16,7 @@
             android:id="@+id/img_book"
             android:layout_width="match_parent"
             android:layout_height="140dp"
-            android:src="@drawable/denvau"
+            android:src="@drawable/mc02_denvau"
             android:scaleType="centerCrop"/>
         <TextView
             android:id="@+id/tv_title"

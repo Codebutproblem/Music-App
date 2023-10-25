@@ -28,7 +28,7 @@
         android:id="@+id/musicPlayImage"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:src="@drawable/imagedragons"
+        android:src="@drawable/mc03_imagedragons"
         app:civ_border_width="2dp"
         app:civ_border_color="#FFFFFF">
 

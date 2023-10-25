@@ -15,7 +15,7 @@ public interface MusicianDao {
     @Insert
     void insertMusician(Musician musician);
 
-    @Query("SELECT * FROM musician ORDER BY musician.name")
+    @Query("SELECT * FROM musician ORDER BY name")
     List<Musician> getMusicianArray();
     @Query("SELECT * FROM musician WHERE name = :name")
     List<Musician>checkExist(String name);

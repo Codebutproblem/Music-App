@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
+    android:background="@drawable/img_bg"
     tools:context=".Activity.FlashActivity">
     <androidx.cardview.widget.CardView
         android:id="@+id/card_logo"
