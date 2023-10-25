@@ -46,6 +46,7 @@ public class LibraryFragment extends Fragment {
         rcvCategory.setAdapter(categoryAdapter);
 
 
+
         return view;
     }
 

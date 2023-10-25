@@ -11,7 +11,7 @@ import com.example.musicapp.Class.Music;
 
 @Database(entities = {Book.class},version = 1)
 public abstract class HistoryDataBase extends RoomDatabase {
-    private static final String DATABASE_NAME = "history_data.db";
+    private static final String DATABASE_NAME = "historydata.db";
     private static HistoryDataBase instance;
     public static synchronized HistoryDataBase getInstance(Context context){
         if (instance == null){

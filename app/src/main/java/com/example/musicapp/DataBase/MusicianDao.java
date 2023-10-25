@@ -1,6 +1,7 @@
 package com.example.musicapp.DataBase;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
@@ -14,8 +15,11 @@ public interface MusicianDao {
     @Insert
     void insertMusician(Musician musician);
 
-    @Query("SELECT * FROM musician")
+    @Query("SELECT * FROM musician ORDER BY musician.name")
     List<Musician> getMusicianArray();
     @Query("SELECT * FROM musician WHERE name = :name")
     List<Musician>checkExist(String name);
+
+    @Delete
+    void deleteMusician(Musician musician);
 }

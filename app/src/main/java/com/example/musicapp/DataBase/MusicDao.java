@@ -17,7 +17,7 @@ public interface MusicDao {
     @Insert
     void insertMusic(Music music);
 
-    @Query("SELECT * FROM music")
+    @Query("SELECT * FROM music ORDER BY music.tenNhac")
     List<Music> getMusicArray();
 
     @Query("SELECT * FROM music WHERE tenNhac = :tenNhac")
@@ -26,4 +26,7 @@ public interface MusicDao {
     void updateMusic(Music music);
     @Delete
     void deleteMusic(Music music);
+
+    @Query("SELECT * FROM music WHERE (music.tenNhacFormat LIKE '%' || :name || '%') OR  (music.caSiFormat LIKE '%' || :name || '%') ")
+    List<Music>searchMusic(String name);
 }

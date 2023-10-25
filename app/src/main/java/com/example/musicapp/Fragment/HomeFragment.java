@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ import java.util.List;
 public class HomeFragment extends Fragment {
     private RecyclerView rcvMusician;// RecyclerView để hiển thị danh sách nhạc sĩ
     private MusicianAdapter adapter;// Adapter để quản lý danh sách nhạc sĩ
+    private EditText edtSearch;
 
     @Nullable
     @Override
@@ -41,9 +43,10 @@ public class HomeFragment extends Fragment {
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
         rcvMusician.setLayoutManager(staggeredGridLayoutManager);
         List<Musician> musicianList =  MusicianDataBase.getInstance(getActivity()).musicianDao().getMusicianArray();
-        Collections.sort(musicianList);
         adapter.setData(getActivity(), musicianList);
         rcvMusician.setAdapter(adapter);
+
+
         return view;
     }
     //Quay về trang đăng nhập
@@ -51,5 +54,6 @@ public class HomeFragment extends Fragment {
     // Phương thức để ánh xạ các thành phần trong layout
     private void AnhXa(View view) {
         rcvMusician = view.findViewById(R.id.rcv_musician);
+        edtSearch = view.findViewById(R.id.search_box);
     }
 }

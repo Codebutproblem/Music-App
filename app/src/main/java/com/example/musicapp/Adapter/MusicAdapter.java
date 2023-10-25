@@ -28,7 +28,7 @@ import com.example.musicapp.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHolder> implements Filterable {
+public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHolder>{
     private Context context;
     private List<Music> arrayMusic;// Danh sách ban đầu của các bài nhạc
     private List<Music>arrayMusicOld;// Danh sách ban đầu được sao lưu để phục hồi khi tìm kiếm trống
@@ -113,44 +113,4 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHol
         }
     }
 
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence charSequence) {
-                String strSearch = charSequence.toString();
-                if(strSearch.isEmpty()){
-                    // Nếu tìm kiếm trống, sử dụng danh sách ban đầu
-                    arrayMusic = arrayMusicOld;
-                }
-                else{
-                    // Tạo danh sách tạm thời để lưu kết quả tìm kiếm
-                    List<Music> arraySearch = new ArrayList<>();
-                    for(Music music : arrayMusic){
-                        // Kiểm tra xem tên bài hát có chứa chuỗi tìm kiếm không
-                        if(NlpUtils.removeAccent(music.getTenNhac()).toLowerCase().contains(NlpUtils.removeAccent(strSearch).toLowerCase())
-                          ||NlpUtils.removeAccent(music.getCaSi()).toLowerCase().contains(NlpUtils.removeAccent(strSearch).toLowerCase())){
-                            arraySearch.add(music);
-                        }
-                    }
-                    // Gán danh sách tìm kiếm vào danh sách hiển thị
-                    arrayMusic = arraySearch;
-                }
-
-                // Cập nhật danh sách bài hát trong SearchFragment
-                SearchFragment.setArrayMusic(arrayMusic);
-
-                // Tạo kết quả của việc lọc
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = arrayMusic;
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                arrayMusic = (List<Music>)filterResults.values;
-                notifyDataSetChanged();// Thông báo sự thay đổi trong danh sách hiển thị
-            }
-        };
-    }
 }

@@ -52,7 +52,6 @@ public class MusicianPlaylistActivity extends AppCompatActivity{
 
     public static void setAdapter(List<Music>list){
         if (adapter != null ){
-            Collections.sort(list);
             adapter.setData(context,list);
         }
     }

@@ -12,7 +12,7 @@ import com.example.musicapp.Class.Musician;
 
 @Database(entities = {Musician.class},version = 1)
 public abstract class MusicianDataBase extends RoomDatabase {
-    private static final String DATABASE_NAME = "musician_data.db";
+    private static final String DATABASE_NAME = "musiciandata.db";
     private static MusicianDataBase instance;
     public static synchronized MusicianDataBase getInstance(Context context){
         if (instance == null){
