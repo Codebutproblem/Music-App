@@ -30,7 +30,7 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_below="@id/header_playlist"
         android:id="@+id/play_list"
         android:layout_width="match_parent"

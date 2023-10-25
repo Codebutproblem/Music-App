@@ -1,12 +1,12 @@
 package com.example.musicapp.Class;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Category {
     private String nameCategory;
-    private ArrayList<Book>books;
+    private List<Book>books;
 
-    public Category(String nameCategory, ArrayList<Book> books) {
+    public Category(String nameCategory, List<Book> books) {
         this.nameCategory = nameCategory;
         this.books = books;
     }
@@ -19,11 +19,11 @@ public class Category {
         this.nameCategory = nameCategory;
     }
 
-    public ArrayList<Book> getBooks() {
+    public List<Book> getBooks() {
         return books;
     }
 
-    public void setBooks(ArrayList<Book> books) {
+    public void setBooks(List<Book> books) {
         this.books = books;
     }
 }

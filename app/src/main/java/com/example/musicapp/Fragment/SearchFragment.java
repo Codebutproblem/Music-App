@@ -18,23 +18,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.musicapp.Class.Music;
 import com.example.musicapp.Adapter.MusicAdapter;
-import com.example.musicapp.Data.MusicData;
 import com.example.musicapp.Activity.PlayMusicActivity;
+import com.example.musicapp.DataBase.MusicDataBase;
 import com.example.musicapp.R;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 // Fragment chứa chức năng tìm kiếm âm nhạc
 public class SearchFragment extends Fragment{
-    private ListView lvMusic;// ListView để hiển thị danh sách âm nhạc
-    private static ArrayList<Music> arrayMusic;// Danh sách âm nhạc
+    private static List<Music> arrayMusic;// Danh sách âm nhạc
     private Intent it;// Intent để mở trang chơi âm nhạc
-    private MusicAdapter adapter;// Adapter để quản lý danh sách âm nhạc
+    private static MusicAdapter adapter;// Adapter để quản lý danh sách âm nhạc
     private Toolbar toolbar;// Toolbar cho giao diện tìm kiếm
     private static SearchView searchView;// Thành phần tìm kiếm
+    private RecyclerView rcvMusic;
+
+    private static Context context;
 
     // Phương thức getter để lấy đối tượng SearchView
     public static SearchView getSearchView() {
@@ -42,33 +47,44 @@ public class SearchFragment extends Fragment{
     }
 
     // Phương thức getter để lấy danh sách âm nhạc
-    public static ArrayList<Music> getArrayMusic() {
+    public static List<Music> getArrayMusic() {
         return arrayMusic;
     }
 
     // Phương thức setter để cập nhật danh sách âm nhạc
-    public static void setArrayMusic(ArrayList<Music>newArrayMusic){
+    public static void setArrayMusic(List<Music>newArrayMusic){
         arrayMusic = newArrayMusic;
     }
+
+    public static void setAdapter(List<Music>musicList) {
+        if(adapter != null){
+            Collections.sort(musicList);
+            adapter.setData(context, musicList);
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Gắn layout fragment_search.xml vào fragment
         View view = inflater.inflate(R.layout.fragment_search,container,false);
+        context = getActivity();
         AnhXa(view);// Ánh xạ các thành phần trong layout
-        arrayMusic = MusicData.getArrayMusic();// Lấy danh sách âm nhạc từ lớp MusicData
+        arrayMusic =  MusicDataBase.getInstance(getActivity()).musicDao().getMusicArray();// Lấy danh sách âm nhạc từ lớp MusicData
+        Collections.sort(arrayMusic);
         AppCompatActivity activity = (AppCompatActivity)getActivity();
         activity.setSupportActionBar(toolbar);// Gắn toolbar vào activity
         activity.getSupportActionBar().setTitle("Search");// Đặt tiêu đề trang tìm kiếm trên toolbar
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));// Đặt màu tiêu đề trắng
-        adapter = new MusicAdapter(getContext(), R.layout.music_line, arrayMusic);// Khởi tạo adapter
-        lvMusic.setAdapter(adapter);// Gắn adapter vào ListView
-        lvMusic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                openPlayPage(i);// Mở trang chơi âm nhạc khi người dùng nhấn vào một mục trong danh sách
-            }
-        });
+
+
+        adapter = new MusicAdapter();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,false);
+        rcvMusic.setLayoutManager(linearLayoutManager);
+        adapter.setData(getActivity(),arrayMusic);
+        rcvMusic.setAdapter(adapter);
+
+
         return view;// Trả về giao diện fragment đã được tạo
     }
 
@@ -77,14 +93,13 @@ public class SearchFragment extends Fragment{
         PlayMusicActivity.setArrayMusic(arrayMusic);
         it = new Intent(getActivity(),PlayMusicActivity.class);
         it.putExtra("position",i + "");// Truyền vị trí âm nhạc được chọn cho trang chơi âm nhạc
-        it.putExtra("from","Search");
         startActivity(it);
     }
 
     // Phương thức để ánh xạ các thành phần trong layout
     private void AnhXa(View view) {
         toolbar = view.findViewById(R.id.search_toolbar);// Ánh xạ toolbar
-        lvMusic = view.findViewById(R.id.musicList);// Ánh xạ ListView
+        rcvMusic = view.findViewById(R.id.musicList);
     }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

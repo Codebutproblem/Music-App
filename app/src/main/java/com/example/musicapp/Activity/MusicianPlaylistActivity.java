@@ -1,7 +1,10 @@
 package com.example.musicapp.Activity;
 //Giao diện chứa các bài nhạc của từng ca sỹ
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,33 +18,49 @@ import com.example.musicapp.Class.Music;
 import com.example.musicapp.Data.MusicData;
 import com.example.musicapp.Class.Musician;
 import com.example.musicapp.Data.MusicianData;
+import com.example.musicapp.DataBase.MusicDataBase;
 import com.example.musicapp.R;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class MusicianPlaylistActivity extends AppCompatActivity{
     // Khai báo các biến và thành phần giao diện
-    RelativeLayout layoutPlayList;
-    TextView name;
-    private ListView lvMusic;
-    private static ArrayList<Music> arrayMusic;
+    private RelativeLayout layoutPlayList;
+    private TextView name;
+    private RecyclerView rcvMusic;
+    private static List<Music> arrayMusic;
     private Intent it;
-    private MusicAdapter adapter;
+    private static MusicAdapter adapter;
+
+    private String parentPage;
+
+    private static Context context;
+    public static Context getContext(){
+        return context;
+    }
 
     // Phương thức để lấy danh sách nhạc
-    public static ArrayList<Music> getArrayMusic() {
+    public static List<Music> getArrayMusic() {
         return arrayMusic;
     }
 
     // Phương thức để cài đặt danh sách nhạc
-    public static void setArrayMusic(ArrayList<Music>newArrayMusic){
+    public static void setArrayMusic(List<Music>newArrayMusic){
         arrayMusic = newArrayMusic;
+    }
+
+    public static void setAdapter(List<Music>list){
+        if (adapter != null ){
+            Collections.sort(list);
+            adapter.setData(context,list);
+        }
     }
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.musician_playlist_activity);
-
+        context = this;
         // Ánh xạ các thành phần giao diện
         AnhXa();
 
@@ -49,47 +68,35 @@ public class MusicianPlaylistActivity extends AppCompatActivity{
 
         String id = it.getStringExtra("musician");
         String musicianName = it.getStringExtra("musician");
+        parentPage = it.getStringExtra("parent");
 
         Musician musician = MusicianData.getMusicianHashMap().get(id);
-        arrayMusic = MusicData.musicianList(musicianName,MusicData.getArrayMusic());
+        arrayMusic = MusicData.musicianList(musicianName, MusicDataBase.getInstance(this).musicDao().getMusicArray());
+        Collections.sort(arrayMusic);
         name.setText(musician.getName());
         layoutPlayList.setBackgroundResource(musician.getImageBg());
 
+        adapter = new MusicAdapter();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL,false);
+        rcvMusic.setLayoutManager(linearLayoutManager);
+        adapter.setData(this,arrayMusic);
+        rcvMusic.setAdapter(adapter);
 
-        // Tạo adapter cho danh sách nhạc
-        adapter = new MusicAdapter(MusicianPlaylistActivity.this, R.layout.music_line, arrayMusic);
-        lvMusic.setAdapter(adapter);
 
-        // Xử lý sự kiện khi người dùng chọn một bài hát
-        lvMusic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                openPlayPage(i);
-            }
-        });
-    }
-
-    // Mở trang chơi nhạc với bài hát được chọn
-    private void openPlayPage(int i){
-        PlayMusicActivity.setArrayMusic(arrayMusic);
-        it = new Intent(this,PlayMusicActivity.class);
-        it.putExtra("position",i + "");
-        it.putExtra("from","MusicianPlaylist");
-        startActivity(it);
     }
 
     // Ánh xạ các thành phần giao diện
     private void AnhXa() {
         layoutPlayList = findViewById(R.id.layout_play_list);
         name = findViewById(R.id.text_name);
-        lvMusic = findViewById(R.id.play_list);
+        rcvMusic = findViewById(R.id.play_list);
     }
     @Override
     public void onBackPressed() {
-        // Dừng phát nhạc khi người dùng bấm nút "Back"
-        Intent it = new Intent(this,MainActivity.class);
-        it.putExtra("user",LoginActivity.getUsername());
-        startActivity(it);
+        if (parentPage.equals("home")){
+            Intent it = new Intent(this, MainActivity.class);
+            startActivity(it);
+        }
         super.onBackPressed();
     }
 }

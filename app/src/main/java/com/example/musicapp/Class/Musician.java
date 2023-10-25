@@ -1,9 +1,16 @@
 package com.example.musicapp.Class;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.io.Serializable;
 
+
+@Entity(tableName = "musician")
 public class Musician implements Serializable,Comparable<Musician> {
-    private String Id;
+
+    @PrimaryKey(autoGenerate = true)
+    private int id;
     private int imageId; // ID của tài liệu hình ảnh đại diện cho nghệ sĩ
     private int imageBg;
     private String name; // Tên của nghệ sĩ
@@ -15,11 +22,11 @@ public class Musician implements Serializable,Comparable<Musician> {
         this.name = name;
     }
     //Các phương thức Getter và Setter
-    public String getId() {
-        return Id;
+    public int getId() {
+        return id;
     }
-    public void setId(String id) {
-        Id = id;
+    public void setId(int id) {
+        this.id = id;
     }
     public int getImageBg() {
         return imageBg;

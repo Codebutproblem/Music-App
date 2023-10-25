@@ -20,9 +20,17 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.musicapp.Class.Book;
+import com.example.musicapp.Class.Category;
 import com.example.musicapp.Class.Music;
-import com.example.musicapp.ConnectionSQL.ConClass;
+import com.example.musicapp.Data.LibraryData;
+import com.example.musicapp.Data.MusicData;
+import com.example.musicapp.DataBase.HistoryDataBase;
+import com.example.musicapp.DataBase.MusicDataBase;
+import com.example.musicapp.DataBase.MusicianDataBase;
 import com.example.musicapp.Fragment.HomeFragment;
+import com.example.musicapp.Fragment.LibraryFragment;
+import com.example.musicapp.Fragment.SearchFragment;
 import com.example.musicapp.R;
 
 import java.io.IOException;
@@ -33,6 +41,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -44,7 +53,7 @@ public class PlayMusicActivity extends AppCompatActivity {
     private ImageButton playPauseButton,preButton,nextButton,replayButton,favBtn;
     private MediaPlayer mediaPlayer;
     private Animation animation;
-    private static ArrayList<Music> arrayMusic;
+    private static List<Music> arrayMusic;
     private Connection connection;
     private String parentPage;
     private int position;
@@ -54,7 +63,7 @@ public class PlayMusicActivity extends AppCompatActivity {
     private int SWIPE_VELOCITY_THRESHOLD = 100;
 
     // Phương thức để thiết lập danh sách nhạc
-    public static void setArrayMusic(ArrayList<Music> arrayMusic) {
+    public static void setArrayMusic(List<Music> arrayMusic) {
         PlayMusicActivity.arrayMusic = arrayMusic;
     }
 
@@ -69,10 +78,7 @@ public class PlayMusicActivity extends AppCompatActivity {
         setMusicName();
         khoiTaoMediaPlayer();
         setTimeTotal();
-        if(LoginActivity.checkLogin()){
-            ConnectionSQL();
-            setFavButton();
-        }
+        setFavButton();
 
         // Xử lý sự kiện khi nút Play/Pause được nhấn
         playPauseButton.setOnClickListener(new View.OnClickListener() {
@@ -168,31 +174,19 @@ public class PlayMusicActivity extends AppCompatActivity {
     }
 
     private void addHistory() {
-        if (!LoginActivity.checkLogin()){
-            return;
+        Music music = arrayMusic.get(position);
+        Book book = new Book(music.getId(),"hisMusic",music.getHinhNen(), music.getTenNhac());
+        HistoryDataBase.getInstance(this).historyDao().insertHistory(book);
+        List<Book>list = HistoryDataBase.getInstance(this).historyDao().getBookArray();
+        if (list.size() > 10){
+            HistoryDataBase.getInstance(this).historyDao().deleteBook(list.get(0));
         }
-        String sql = "INSERT INTO HISTORY VALUES(?,?,CURRENT_TIMESTAMP)";
-        try {
-            PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1,LoginActivity.getUsername());
-            stm.setString(2,arrayMusic.get(position).getId());
-            stm.execute();
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        setAdapter();
     }
 
-
-    private void ConnectionSQL() {
-        ConClass con = new ConClass();
-        connection = con.conclass();
-    }
     private void setFavButton() {
-        if(!LoginActivity.checkLogin()){
-            return;
-        }
-        if(checkContains(arrayMusic.get(position).getId())){
+        Music music = arrayMusic.get(position);
+        if (music.getLove()){
             favBtn.setImageResource(R.drawable.ic_favorite);
         }
         else{
@@ -200,101 +194,35 @@ public class PlayMusicActivity extends AppCompatActivity {
         }
     }
 
-    private int cntLike(String id){
-        String sql = "SELECT LIKE_COUNT FROM MUSIC WHERE MUSIC_ID = '" + id + "'";
-        try {
-            Statement stm = connection.createStatement();
-            ResultSet rs = stm.executeQuery(sql);
-            if (rs.next()){
-                return rs.getInt(1);
-            }
-            return 0;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void addLike(String id){
-        String sql = "UPDATE MUSIC SET LIKE_COUNT = ? WHERE MUSIC_ID = ?";
-        try {
-            PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setInt(1,cntLike(id)+1);
-            stm.setString(2,id);
-            stm.execute();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    private void subLike(String id){
-        String sql = "UPDATE MUSIC SET LIKE_COUNT = ? WHERE MUSIC_ID = ?";
-        try {
-            PreparedStatement stm = connection.prepareStatement(sql);
-            if (cntLike(id) > 0){
-                stm.setInt(1,cntLike(id)-1);
-            }
-            else{
-                stm.setInt(1,0);
-            }
-            stm.setString(2,id);
-            stm.execute();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
     private void favBtnClick() {
-        if(!LoginActivity.checkLogin()){
-            Toast.makeText(this, "Bạn chưa đăng nhập", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (checkContains(arrayMusic.get(position).getId())){
+        Music music = arrayMusic.get(position);
+        if (music.getLove()){
+            music.setLove(false);
+            MusicDataBase.getInstance(this).musicDao().updateMusic(music);
             favBtn.setImageResource(R.drawable.ic_favorite_border);
-            deleteMusic(arrayMusic.get(position).getId());
-            subLike(arrayMusic.get(position).getId());
-            Toast.makeText(this, "Đã xóa khỏi mục yêu thích", Toast.LENGTH_SHORT).show();
+            setAdapter();
+            Toast.makeText(this,"Đã xóa khỏi mục yêu thích",Toast.LENGTH_SHORT).show();
         }
         else{
+            music.setLove(true);
+            MusicDataBase.getInstance(this).musicDao().updateMusic(music);
             favBtn.setImageResource(R.drawable.ic_favorite);
-            insertMusic(arrayMusic.get(position).getId());
-            addLike(arrayMusic.get(position).getId());
-            Toast.makeText(this, "Đã thêm vào mục yêu thích", Toast.LENGTH_SHORT).show();
+            setAdapter();
+            Toast.makeText(this,"Đã thêm vào mục yêu thích",Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void deleteMusic(String id){
-        String sql = "DELETE FROM FAVOURITE WHERE MUSIC_ID = '" + id + "' AND USERNAME = '" + LoginActivity.getUsername() +"'" ;
-        try {
-            Statement stm = connection.createStatement();
-            stm.execute(sql);
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    private void insertMusic(String id){
-        String sql = "INSERT INTO FAVOURITE VALUES(?,?)";
-        try {
-            PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1,LoginActivity.getUsername());
-            stm.setString(2,id);
-            stm.execute();
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    private boolean checkContains(String id){
-        String query = "SELECT * FROM FAVOURITE WHERE USERNAME = '"+ LoginActivity.getUsername() + "' AND MUSIC_ID = '" + id + "'";
-        try {
-            Statement stm = connection.createStatement();
-            ResultSet rs = stm.executeQuery(query);
-            if(rs.next()){
-                return true;
-            }
-            return false;
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    private void setAdapter() {
+        SearchFragment.setAdapter(MusicDataBase.getInstance(this).musicDao().getMusicArray());
+        MusicianPlaylistActivity.setAdapter(MusicData.musicianList(arrayMusic.get(position).getCaSi(),MusicDataBase.getInstance(this).musicDao().getMusicArray()));
+        List<Book> musicianList =LibraryData.getMusicianData();
+        List<Book>musicList = LibraryData.getFavlist();
+        List<Book>historyList = LibraryData.getHisList();
+        List<Category> categories = new ArrayList<>();
+        categories.add(new Category("Ca Sĩ",musicianList));
+        categories.add(new Category("Yêu thích",musicList));
+        categories.add(new Category("Lịch sử phát",historyList));
+        LibraryFragment.setAdapter(categories);
     }
 
     // Phương thức để chuyển đến bài hát kế tiếp trong danh sách
@@ -389,17 +317,8 @@ public class PlayMusicActivity extends AppCompatActivity {
         seekBar.setMax(mediaPlayer.getDuration());
     }
     private void khoiTaoMediaPlayer(){
-        mediaPlayer = new MediaPlayer();
+        mediaPlayer = MediaPlayer.create(PlayMusicActivity.this,arrayMusic.get(position).getSourceMp3());
         // Khởi tạo MediaPlayer để phát nhạc từ tệp âm thanh tại vị trí hiện tại trong danh sách nhạc
-        try {
-            do{
-                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                mediaPlayer.setDataSource(arrayMusic.get(position).getLinkMp3());
-                mediaPlayer.prepare();
-            }while (mediaPlayer == null);
-        } catch (Exception e) {
-            Log.e("ERROR",e.getMessage());
-        }
     }
     private void setMusicName() {
         // Đặt tên bài hát hiện tại lên giao diện
@@ -415,7 +334,6 @@ public class PlayMusicActivity extends AppCompatActivity {
         // Lấy dữ liệu vị trí bài hát được chọn từ Intent
         Intent it = getIntent();
         position = Integer.parseInt(it.getStringExtra("position"));
-        parentPage = it.getStringExtra("from");
     }
     private void AnhXa() {
         // Ánh xạ các thành phần giao diện
@@ -436,21 +354,6 @@ public class PlayMusicActivity extends AppCompatActivity {
         // Dừng phát nhạc khi người dùng bấm nút "Back"
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
-        }
-        if(parentPage.equals("Search")){
-            Intent it = new Intent(this,MainActivity.class);
-            it.putExtra("user",LoginActivity.getUsername());
-            startActivity(it);
-        }
-        if(parentPage.equals("MusicianPlaylist")){
-            Intent it = new Intent(this,MusicianPlaylistActivity.class);
-            it.putExtra("musician",arrayMusic.get(position).getCaSi());
-            startActivity(it);
-        }
-        if (parentPage.equals("Library")){
-            Intent it = new Intent(this,MainActivity.class);
-            it.putExtra("user",LoginActivity.getUsername());
-            startActivity(it);
         }
         super.onBackPressed();
     }

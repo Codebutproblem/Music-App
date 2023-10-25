@@ -1,37 +1,41 @@
 package com.example.musicapp.Class;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity(tableName = "music")
 public class Music implements Comparable<Music>{
 
-    private String id;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
     private String tenNhac; // Tên của bản nhạc
     private String caSi; // Tên của tác giả của bản nhạc
     private int hinhNen; // Tài liệu hình ảnh đại diện cho bản nhạc
-    private String linkMp3; // Tài liệu âm thanh của bản nhạc
-    private int likeCount; //Lượt thích
+    private int sourceMp3; // Tài liệu âm thanh của bản nhạc
+    private boolean love; //Lượt thích
 
     // Constructor (Hàm khởi tạo)
-    public Music(String tenNhac, String caSi, int hinhNen, String linkMp3) {
+    public Music(String tenNhac, String caSi, int hinhNen, int sourceMp3) {
         this.tenNhac = tenNhac;
         this.caSi = caSi;
         this.hinhNen = hinhNen;
-        this.linkMp3 = linkMp3;
+        this.sourceMp3 = sourceMp3;
     }
 
-
-    public int getLikeCount() {
-        return likeCount;
+    public boolean getLove() {
+        return love;
     }
 
-    public void setLikeCount(int likeCount) {
-        this.likeCount = likeCount;
+    public void setLove(boolean love) {
+        this.love = love;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -59,12 +63,12 @@ public class Music implements Comparable<Music>{
         this.hinhNen = hinhNen;
     }
 
-    public String getLinkMp3() {
-        return linkMp3;
+    public int getSourceMp3() {
+        return sourceMp3;
     }
 
-    public void setLinkMp3(String linkMp3) {
-        this.linkMp3 = linkMp3;
+    public void setSourceMp3(int sourceMp3) {
+        this.sourceMp3 = sourceMp3;
     }
 
     // Phương thức compareTo dùng để so sánh hai đối tượng Music theo tên bản nhạc

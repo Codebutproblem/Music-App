@@ -1,15 +1,23 @@
 package com.example.musicapp.Class;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.io.Serializable;
 
+@Entity(tableName = "history")
 public class Book implements Serializable {
-
-    private String id;
+    @PrimaryKey(autoGenerate = true)
+    private int key;
+    private int id;
     private String category;
     private int resourceId;
     private String title;
+    public Book(){
 
-    public Book(String id, String category, int resourceId, String title) {
+    }
+    public Book(int id, String category, int resourceId, String title) {
         this.id = id;
         this.category = category;
         this.resourceId = resourceId;
@@ -21,11 +29,19 @@ public class Book implements Serializable {
         this.title = title;
     }
 
-    public String getId() {
+    public int getKey() {
+        return key;
+    }
+
+    public void setKey(int key) {
+        this.key = key;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

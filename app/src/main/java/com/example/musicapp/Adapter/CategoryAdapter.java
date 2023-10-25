@@ -14,18 +14,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.musicapp.Class.Category;
 import com.example.musicapp.R;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
     private Context mContext;
-    private ArrayList<Category>mListCategory;
+    private List<Category> mListCategory;
 
     public CategoryAdapter(Context mContext){
         this.mContext = mContext;
     }
-    public void setData(ArrayList<Category>list){
+    public void setData(List<Category>list){
         this.mListCategory = list;
         notifyDataSetChanged();
     }

@@ -11,12 +11,12 @@
     <include
         android:id="@+id/search_toolbar"
         layout="@layout/main_toolbar" />
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_below="@id/search_toolbar"
         android:id="@+id/musicList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="1dp" >
-    </ListView>
+    </androidx.recyclerview.widget.RecyclerView>
 </RelativeLayout>

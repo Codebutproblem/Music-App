@@ -1,6 +1,7 @@
 package com.example.musicapp.Activity;
 //Giao diện chính sử dụng file activity_main.xml
 //chứa ViewPager và BottomNavigationView
+import android.content.Context;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -10,22 +11,34 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.musicapp.Class.TableData;
+import com.example.musicapp.Class.Book;
+import com.example.musicapp.Class.Music;
+import com.example.musicapp.Data.MusicData;
+import com.example.musicapp.Data.MusicianData;
+import com.example.musicapp.DataBase.HistoryDataBase;
+import com.example.musicapp.DataBase.MusicDataBase;
+import com.example.musicapp.DataBase.MusicianDao;
 import com.example.musicapp.Fragment.SearchFragment;
 import com.example.musicapp.R;
 import com.example.musicapp.Adapter.ViewPagerAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.List;
+
+
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView navigationView;
     private ViewPager viewPager;
     private ViewPagerAdapter viewPagerAdapter;
+    private static Context context;
+    public static Context getContext(){
+        return context;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TableData.create();
-
+        context = this;
         // Khai báo và khởi tạo các thành phần giao diện
         navigationView = findViewById(R.id.bottom_nav);
         viewPager = findViewById(R.id.view_pager);
@@ -82,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     @Override
     public void onBackPressed() {

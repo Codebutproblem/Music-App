@@ -21,12 +21,13 @@ import com.example.musicapp.Data.MusicData;
 import com.example.musicapp.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder>{
-    private ArrayList<Book>mBooks;
+    private List<Book>mBooks;
     private Context mContext;
 
-    public void setData(Context mContext, ArrayList<Book>list){
+    public void setData(Context mContext, List<Book>list){
         this.mContext = mContext;
         this.mBooks = list;
         notifyDataSetChanged();
@@ -59,27 +60,24 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
 
         if(book.getCategory().equals("favMusic")){
             Intent it = new Intent(mContext, PlayMusicActivity.class);
-            LibraryData libraryData = new LibraryData();
-            ArrayList<Book>books = libraryData.getFavlist();
-            ArrayList<Music> arrayMusic = MusicData.getMusicList(books);
+            List<Book>books = LibraryData.getFavlist();
+            List<Music> arrayMusic = MusicData.getMusicList(books);
             PlayMusicActivity.setArrayMusic(arrayMusic);
             it.putExtra("position",MusicData.getPosition(book.getId(),arrayMusic) + "");
-            it.putExtra("from","Library");
             mContext.startActivity(it);
         }
         if(book.getCategory().equals("hisMusic")){
             Intent it = new Intent(mContext, PlayMusicActivity.class);
-            LibraryData libraryData = new LibraryData();
-            ArrayList<Book>books = libraryData.getHisList();
-            ArrayList<Music> arrayMusic = MusicData.getMusicList(books);
+            List<Book>books = LibraryData.getHisList();
+            List<Music> arrayMusic = MusicData.getMusicList(books);
             PlayMusicActivity.setArrayMusic(arrayMusic);
             it.putExtra("position",MusicData.getPosition(book.getId(),arrayMusic) + "");
-            it.putExtra("from","Library");
             mContext.startActivity(it);
         }
         if (book.getCategory().equals("musician")){
             Intent it = new Intent(mContext, MusicianPlaylistActivity.class);
-            it.putExtra("musician",book.getId());
+            it.putExtra("musician",book.getTitle());
+            it.putExtra("parent","library");
             mContext.startActivity(it);
         }
     }

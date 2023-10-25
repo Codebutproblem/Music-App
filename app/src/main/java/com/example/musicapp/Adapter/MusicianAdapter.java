@@ -17,15 +17,15 @@ import com.example.musicapp.Class.Musician;
 import com.example.musicapp.Activity.MusicianPlaylistActivity;
 import com.example.musicapp.R;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class MusicianAdapter extends RecyclerView.Adapter<MusicianAdapter.MusicianViewHolder>{
 
-    private ArrayList<Musician>musicianList;// Danh sách các nhạc sĩ
+    private List<Musician>musicianList;// Danh sách các nhạc sĩ
     private Context context;
 
     // Phương thức để cập nhật dữ liệu cho Adapter
-    public void setData(Context context,ArrayList<Musician>list){
+    public void setData(Context context, List<Musician> list){
         this.context = context;
         this.musicianList = list;
         notifyDataSetChanged();
@@ -62,6 +62,7 @@ public class MusicianAdapter extends RecyclerView.Adapter<MusicianAdapter.Musici
     private void onClickGoToDetail(Musician musician){
         Intent it = new Intent(context, MusicianPlaylistActivity.class);
         it.putExtra("musician",musician.getName());
+        it.putExtra("parent","home");
         context.startActivity(it);
     }
     @Override
@@ -74,7 +75,7 @@ public class MusicianAdapter extends RecyclerView.Adapter<MusicianAdapter.Musici
 
     // ViewHolder để lưu trữ các thành phần giao diện trong một mục danh sách
     public class MusicianViewHolder extends RecyclerView.ViewHolder{
-        CardView layoutItem;
+        private CardView layoutItem;
         private ImageView imgMusician;
         private TextView musicianName;
         public MusicianViewHolder(@NonNull View itemView) {
